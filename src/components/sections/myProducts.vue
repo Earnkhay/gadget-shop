@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col mb-2">
-        <div class="card" style="width: 20rem;">
+        <div class="card" style="width: 18rem;">
           <img src="@/assets/undraw_Add_to_cart_re_wrdo.png" class="card-img-top" alt="">
           <div class="card-body">
             <h5 class="card-title">Hp Laptop</h5>
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="col mb-2">
-        <div class="card" style="width: 20rem;">
+        <div class="card" style="width: 18rem;">
           <img src="@/assets/undraw_Add_to_cart_re_wrdo.png" class="card-img-top" alt="">
           <div class="card-body">
             <h5 class="card-title">Hp Laptop</h5>
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="col mb-2">
-        <div class="card" style="width: 20rem;">
+        <div class="card" style="width: 18rem;">
           <img src="@/assets/undraw_Add_to_cart_re_wrdo.png" class="card-img-top" alt="">
           <div class="card-body">
             <h5 class="card-title">Hp Laptop</h5>
@@ -38,10 +38,3 @@
   </div>
 </template>
 
-<!-- <script>
-
-</script>
-
-<style>
-
-</style> -->

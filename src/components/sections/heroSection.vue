@@ -6,12 +6,12 @@
       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio molestias, impedit aliquid est optio, 
         non officiis quas quasi nobis blanditiis atque a, repellat et esse dolore cupiditate magnam numquam vitae?</p>
       <div class="d-flex">
-        <button type="button" class="btn btn-lg btn-primary me-3">Primary</button>
+        <button type="button" class="btn btn-lg btn-primary me-3">Get started</button>
         <button type="button" class="btn btn-lg btn-outline-primary">Primary</button>
       </div>
     </div>
     <div class="col-md-7">
-      <img src="@/assets/undraw_web_shopping_re_owap.png" class="img-fluid" alt="">
+      <img src="@/assets/21727022_6505894.jpg" class="img-fluid" alt="">
     </div>
   </div>
 </div>
