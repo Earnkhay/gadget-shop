@@ -1,11 +1,31 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import admin from '@/views/admin.vue'
+import overview from '@/components/overview.vue'
+import products from '@/components/products.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: admin,
+    children: [
+      {
+        path: 'overview',
+        name: 'overview',
+        component: overview 
+      },
+      {
+        path: 'products',
+        name: 'products',
+        component: products 
+      }
+    ]
   },
   {
     path: '/about',
