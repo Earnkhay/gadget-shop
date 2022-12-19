@@ -39,16 +39,7 @@
                                           {{ modalType == "signUp" ? "Sign Up" : "Sign In"}}
                                       </div>
                                   </button>
-                                  <!-- <div class="d-grid gap-2 mb-2">
-                                      <button class="btn bg-transparent text-dark googleBtn" @click.prevent="signUpWithGoogle">
-                                          <spinner v-if="spinnerShows" :spinnerSize="spinnerSize"/>
-                                          <div v-else>
-                                              {{modalType == "signUp" ? "Sign Up with Google" : "Sign In with Google"}}
-                                          </div>
-                                      </button>
-                                  </div> -->
                               </div>
-                  
                           <p id="account" class="text-center"> {{modalType == "signUp" ? "Already have an account?" : "Don't have an account?"}} 
                               <a href="" id="link" @click.prevent="setLoginPage" class="text-decoration-none"> {{ modalType == "signUp" ? "Log in here" : "Sign up here" }}</a></p>
                       </form>    
@@ -65,6 +56,7 @@ import { Options, Vue } from 'vue-class-component';
 import alert from '@/components/UI/alert.vue'
 import spinner from '@/components/UI/spinner.vue'
 import axios from 'axios'
+import $ from 'jquery'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "@/firebase.js"
 import { doc, setDoc } from "firebase/firestore";
@@ -72,7 +64,7 @@ import { doc, setDoc } from "firebase/firestore";
 @Options({
 components: {
     alert, 
-    spinner
+    spinner,
 },
 })
 export default class login extends Vue {
@@ -172,22 +164,22 @@ async checkModalTypeAuth(modalType){
             setDoc(doc(db, "profiles", user.user.uid), {
                 name: this.name
             });
-            axios.post('https://gadget-shop-65d7a-default-rtdb.firebaseio.com/signupModal.json', {
+            axios.post('https://gadget-shop-65d7a-default-rtdb.firebaseio.com/signup.json', {
                 formData: formData
             })
             this.alertTitle = "Success !, You're Welcome"
             this.alertType = "Success"
             this.alertShow = true
             this.spinnerShow = true
-            this.$router.replace(`/admin`)
-            // setTimeout(() => {  
-            //         this.alertShow = false 
-            //         this.spinnerShow = false 
-                    
-            //         this.email = ''
-            //         this.password = '' 
-            //         this.name = '' 
-            // },3000) 
+            setTimeout(() => {  
+                    this.alertShow = false 
+                    this.spinnerShow = false 
+                    $('#login').modal('hide')
+                    this.$router.replace(`/admin`)
+                    this.email = ''
+                    this.password = '' 
+                    this.name = '' 
+            },3000) 
         })
         .catch((err) => {
             this.alertType = "danger"
@@ -222,12 +214,14 @@ async checkModalTypeAuth(modalType){
             this.alertType = "Success"
             this.alertShow = true
             this.spinnerShow = true
-            this.$router.replace('/admin')  
-            // setTimeout(() => {  
-            //         this.alertShow = false  
-            //         this.spinnerShow = false
-                      
-            // },3000) 
+             this.$('#login').modal('hide')
+                    this.$router.replace('/admin')
+                   
+            setTimeout(() => {  
+                    this.alertShow = false  
+                    this.spinnerShow = false
+                     
+            },3000) 
         })
         .catch((err) => {
             this.alertType = "danger"

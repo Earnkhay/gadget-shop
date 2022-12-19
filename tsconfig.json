@@ -34,11 +34,15 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/firebase.js", "src/firebase.js"  ],
   "exclude": [
     "node_modules"
   ],
   "files": [
     "typings.d.ts"
-  ]
+  ],
+  "types": [
+    "vue-sweetalert2",
+    "firebase.js"
+  ],
 }

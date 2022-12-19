@@ -7,11 +7,12 @@
       </button>
       
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="d-flex ms-auto w-50 bg-secondary pe-3 rounded-4" role="search">
-          <input class="form-control me-2 p-2 border-secondary rounded-start" type="search" placeholder="what are you looking for...." aria-label="Search">
-          <button class="btn" type="submit"><span class="d-flex align-items-center"><i class="fa-solid fa-magnifying-glass pe-2"></i>Search</span></button>
-        </form>
+        
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <form class="d-flex h-50 w-50 mt-2 bg-secondary rounded-3 align-items-center" role="search">
+            <input class="form-control border-secondary rounded-start" type="search" placeholder="what are you looking for...." aria-label="Search">
+            <button class="btn" type="submit"><span class="d-flex align-items-center"><i class="fa-solid fa-magnifying-glass me-2"></i>Search</span></button>
+          </form>
           <li class="nav-item dropdown p-2">
             <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Account

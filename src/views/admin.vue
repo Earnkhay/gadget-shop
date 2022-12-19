@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div class="d-flex" id="app">
             <aside class="text-bg-dark adminbar p-3" id="app" ref="jedi">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
                     <h5>Gadget Shop</h5>

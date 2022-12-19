@@ -9,6 +9,7 @@ import { initializeApp } from "firebase/app";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAB9yKn-uZ_YnjswNN6uT97M7zRnKihPe8",
