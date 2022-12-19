@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a href="#" class="nav-link text-light">
+                        <a href="#" class="nav-link text-light" @click="logout">
                             <i class="fa-solid fa-power-off p-1"></i>
                             Logout
                         </a>
@@ -59,8 +59,8 @@
             </aside>
         <div class="content">
             <div class="fs-5 p-2 menubar" ref="menubar">
-                <button class="bg-dark border-dark shadow">
-                    <i class="fa-solid fa-bars text-light" @click="toggleSideBar"></i>   
+                <button class="bg-dark border-dark shadow" @click="toggleSideBar">
+                    <i class="fa-solid fa-bars text-light"></i>   
                 </button>
             </div>
               <div class="dashboard-content p-2">
@@ -74,6 +74,7 @@
 <script>
 import { Options, Vue } from 'vue-class-component';
 import sideBar from '@/components/UI/sideBar.vue'
+import { getAuth, signOut } from "firebase/auth";
 
 @Options({
   components: {
@@ -90,12 +91,24 @@ export default class admin extends Vue {
             this.$refs.menubar.style.display = "block"; 
         }
     }
+    logout(){
+        const auth = getAuth();
+        signOut(auth).then(() => {
+            // Sign-out successful.
+            // console.log('hey', auth);
+            this.$router.replace('/')
+        }).catch((error) => {
+            // An error happened.
+            console.log(error);
+        });
+    }
 }
 </script>
 
 <style scoped>
     #app{
         min-height: 100vh;
+        overflow: hidden;
     }
 
     /* .content{
