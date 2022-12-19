@@ -13,7 +13,6 @@
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "firebase": "^9.15.0",
-    "jquery": "^3.6.2",
     "vue": "^3.2.13",
     "vue-awesome-sidebar": "^1.2.1",
     "vue-axios": "^3.5.2",
