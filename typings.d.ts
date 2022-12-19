@@ -1,2 +1,2 @@
 declare module 'vue-awesome-sidebar'
-declare module 'firebase.js'
+declare module '@/firebase.ts'
