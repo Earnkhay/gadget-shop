@@ -1,6 +1,16 @@
 <template>
     <div id="app">
-        Overview
+      <div class="container p-5">
+        <div class="row align-items-center">
+          <div class="col">
+            <h1>Overview</h1>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, inventore id. Tenetur, eligendi. Amet magnam ducimus accusantium dolor, vel eos.</p>
+          </div>
+          <div class="col">
+            <img src="../assets/undraw_Features_overview_re_2w78.png" alt="" class="img-fluid">
+          </div>
+        </div>
+      </div>
     </div>
   </template>
   

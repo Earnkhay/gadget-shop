@@ -46,8 +46,7 @@ const router = createRouter({
   routes
 })
 
-const auth = getAuth();
-
+// const auth = getAuth();
 
 //to keep user logged in on reload
 const getCurrentUser = () => {
