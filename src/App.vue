@@ -9,4 +9,8 @@
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(248, 243, 244);
 }
+
+i{
+  cursor: pointer;
+}
 </style>

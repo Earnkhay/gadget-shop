@@ -63,7 +63,7 @@
                     <i class="fa-solid fa-bars text-light"></i>   
                 </button>
             </div>
-              <div class="dashboard-content p-2">
+              <div class="dashboard-content">
                 <router-view/>
               </div>
         </div>
@@ -111,10 +111,10 @@ export default class admin extends Vue {
         overflow: hidden;
     }
 
-    /* .content{
+    .content{
         min-height: 100vh;
         width: 100%;
-    } */
+    }
 
     .adminbar{
         min-height: 100vh;
@@ -126,10 +126,6 @@ export default class admin extends Vue {
     li:hover{
         background-color: #0275d8 !important;
         border-radius: 5px;
-    }
-
-    i{
-        cursor: pointer;
     }
 
     .menubar{
