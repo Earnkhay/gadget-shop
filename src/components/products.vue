@@ -178,17 +178,17 @@ export default class products extends Vue {
       }
   }
 
-  uploadImage(){
-    const storage = getStorage();
+  // uploadImage(){
+  //   const storage = getStorage();
 
-    // Create a reference to 'mountains.jpg'
-    const storageRef = ref(storage, 'products/'+ Math.random() + '_'  + file.name);
+  //   // Create a reference to 'mountains.jpg'
+  //   const storageRef = ref(storage, 'products/'+ Math.random() + '_'  + file.name);
 
-    // 'file' comes from the Blob or File API
-    uploadBytes(storageRef, file).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
-    });
-  }
+  //   // 'file' comes from the Blob or File API
+  //   uploadBytes(storageRef, file).then((snapshot) => {
+  //     console.log('Uploaded a blob or file!');
+  //   });
+  // }
 
   editProduct(id){
       const taskToUpdate = this.products.find((product) => product.id === id)
