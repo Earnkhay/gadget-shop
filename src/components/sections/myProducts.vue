@@ -16,12 +16,12 @@
     </div>
   </div> -->
   <carousel :breakpoints="breakpoints">
-      <slide v-for="item in items" :key="item.id">
-        <div class="card" style="width: 20rem;">
-          <img src="@/assets/undraw_Add_to_cart_re_wrdo.png" class="card-img-top" alt="">
+      <slide v-for="(item, id) in items" :key="id">
+        <div class="card" style="width: 18rem; height: 100%;">
+          <img :src="item.thumbnail" style="min-height: 50%;"  class="card-img-top" alt="">
           <div class="card-body text-start">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text">{{item.comment}}</p>
+            <h5 class="card-title">{{item.title}}</h5>
+            <p class="card-text">{{item.description}}</p>
             <a href="#" class="btn btn-primary">Add to Cart</a>
           </div>
         </div>
@@ -34,53 +34,46 @@
   </div>
 </template>
 
-<script lang="ts">
-  import 'vue3-carousel/dist/carousel.css'
-  import { Options, Vue } from 'vue-class-component';
-  import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+<script>
+import 'vue3-carousel/dist/carousel.css'
+import { Options, Vue } from 'vue-class-component';
+import axios from 'axios'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
-  @Options({
-    components: { 
-        Carousel,
-        Slide,
-        Pagination,
-        Navigation, 
+@Options({
+  components: { 
+      Carousel,
+      Slide,
+      Pagination,
+      Navigation, 
+  },
+  })
+export default class testimonial extends Vue {
+    items = []
+
+    breakpoints = {
+    200: {
+      itemsToShow: 1,
     },
-    })
-    export default class testimonial extends Vue {
-        items = [
-            {
-                id : 1,
-                comment : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, voluptatem sapiente? Consequuntur iusto veritatis magni facilis accusamus provident harum id error.",
-                name : "Laptop",
-                job : "Product Manager, Cenflux"
-            },
-            {
-                id : 2,
-                comment : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, voluptatem sapiente? Consequuntur iusto veritatis magni facilis accusamus provident harum id error.",
-                name : "Phone",
-                job : "Designer, Cenflux"
-            },
-            {
-                id : 3,
-                comment : "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, voluptatem sapiente? Consequuntur iusto veritatis magni facilis accusamus provident harum id error.",
-                name : "Computer",
-                job : "Frontend Developer, Cenflux"
-            },
-        ]
+    700: {
+      itemsToShow: 2,
+    },
+    1024: {
+      itemsToShow: 3,
+    },
+  }
 
-        breakpoints = {
-        200: {
-          itemsToShow: 1,
-        },
-        700: {
-          itemsToShow: 2,
-        },
-        1024: {
-          itemsToShow: 3,
-        },
-      }
-        
-    }
+  created(){
+    axios.get('https://dummyjson.com/products/category/smartphones', {
+        timeout: 5000
+    })
+      .then((res) => {
+        console.log(res.data.products)
+        this.items = res.data.products
+        console.log(this.items);
+      })
+      .catch(err => console.error(err));
+  }
+}
   
 </script>

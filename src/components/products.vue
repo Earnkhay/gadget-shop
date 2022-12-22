@@ -39,20 +39,12 @@
             </div>
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-              <input type="file" class="form-control" @change="uploadImage" id="exampleFormControlInput1">
+              <input type="file" class="form-control" ref="fileInput" id="imageInput" @change="uploadImages">
             </div>
-            <div class="form-group d-flex">
-                      <div class="p-1" v-for="(image, index) in product.images" :key="index">
-                          <div class="img-wrapp">
-                              <img :src="image" alt="" width="80px">
-                              <span class="delete-img" @click="deleteImage(image,index)">X</span>
-                          </div>
-                      </div>
-                    </div>
             <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Product Description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" v-model="desc" rows="3"></textarea>
-          </div>
+              <label for="exampleFormControlTextarea1" class="form-label">Product Description</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" v-model="desc" rows="3"></textarea>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -68,6 +60,7 @@
           <tr>
             <th scope="col">Product Name</th>
             <th scope="col">Product Price</th>
+            <!-- <th scope="col">Product img</th> -->
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -75,6 +68,7 @@
           <tr v-for="(product, id) in products" :key="id">
             <td>{{product.name}}</td>
             <td>${{product.price}}</td>
+            <!-- <td><img :src="product.image" alt=""></td> -->
             <td>
               <i class="fa-solid fa-pen-to-square text-primary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="editProduct(product.id)"></i>
               <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id)"></i>
@@ -83,7 +77,6 @@
         </tbody>
       </table>
     </div>
-
     
     <!-- Edit Modal -->
     <div class="modal fade" id="exampleModal2" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -130,12 +123,13 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, snapshot, ge
 })
 export default class products extends Vue {
   products = []
-  images = []
+  image = ""
   name = ""
   price = null
   desc = ""
   editName = ""
   editPrice = null
+  images = []
   editDesc = ""
   currentProduct
   auth = getAuth()
@@ -164,31 +158,69 @@ export default class products extends Vue {
     })
   }
 
-  addProduct(){
+  async addProduct(){
       if(this.name) {
           addDoc(this.productsCollectionRef, { 
               name: this.name,
               price: this.price,
               desc: this.desc,
+              image: this.image,
               date: Date.now(),
           })
         this.name = ""
         this.price = ""
         this.desc = ""
+        document.getElementById('imageInput').value = '';
       }
   }
 
-  // uploadImage(){
-  //   const storage = getStorage();
+  async uploadImages() {
+      // Get a reference to the file input element
+      const fileInput = this.$refs.fileInput;
 
-  //   // Create a reference to 'mountains.jpg'
-  //   const storageRef = ref(storage, 'products/'+ Math.random() + '_'  + file.name);
+      // Get the selected files
+      const files = fileInput.files;
 
-  //   // 'file' comes from the Blob or File API
-  //   uploadBytes(storageRef, file).then((snapshot) => {
-  //     console.log('Uploaded a blob or file!');
-  //   });
-  // }
+      // Iterate over the selected files
+      for (let i = 0; i < files.length; i++) {
+        // Get the current file
+        const file = files[i];
+
+        // Create a new FileReader instance
+        const reader = new FileReader();
+
+        // Listen for the 'load' event on the FileReader instance
+        reader.addEventListener('load', () => {
+          // The 'result' property of the FileReader instance contains the base64-encoded contents of the file
+          const fileData = reader.result;
+
+          // Now you can use the Firebase Storage API to upload the file data to your storage bucket
+          this.uploadImage(fileData, file.name);
+          this.image = fileData
+        });
+
+        // Read the contents of the file as a base64-encoded string
+        reader.readAsDataURL(file);
+      }
+      // const storage = getStorage();
+      // const file = document.getElementById('imageInput').files[0];
+      // const storageRef = ref(storage, file.name);
+      // uploadBytes(storageRef, file).then((snapshot) => {
+      //   console.log('Uploaded a blob or file!');
+      //   this.images.push(snapshot);
+      // });
+    }
+    async uploadImage(fileData, fileName) {
+      const storage = getStorage();
+      const storageRef = ref(storage, 'products/' + fileName);
+
+      // 'file' comes from the Blob or File API
+      uploadBytes(storageRef, fileData).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        this.images.push(snapshot);
+      });
+    }
+
 
   editProduct(id){
       const taskToUpdate = this.products.find((product) => product.id === id)
