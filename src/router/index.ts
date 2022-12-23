@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import admin from '@/views/admin.vue'
 import overview from '@/components/overview.vue'
 import products from '@/components/products.vue'
+import profile from '@/components/profile.vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const routes: Array<RouteRecordRaw> = [
@@ -27,7 +28,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'products',
         name: 'products',
-        component: products 
+        component: products ,
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: profile 
       }
     ]
   },
@@ -87,7 +93,7 @@ router.beforeEach(async (to, from, next) => {
     if (await getCurrentUser()) {
       next();
     }else{
-      alert("You do not have access!")
+      // alert("You do not have access!")
       next("/")
     }
   } else {

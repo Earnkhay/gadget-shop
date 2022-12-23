@@ -6,7 +6,6 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../node_modules/bootstrap/dist/js/bootstrap.js'
 import '@fortawesome/fontawesome-free/css/all.css'
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 

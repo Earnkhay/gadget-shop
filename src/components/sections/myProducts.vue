@@ -68,9 +68,9 @@ export default class testimonial extends Vue {
         timeout: 5000
     })
       .then((res) => {
-        console.log(res.data.products)
+        // console.log(res.data.products)
         this.items = res.data.products
-        console.log(this.items);
+        // console.log(this.items);
       })
       .catch(err => console.error(err));
   }
