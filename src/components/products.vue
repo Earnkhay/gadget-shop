@@ -39,7 +39,8 @@
             </div>
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-              <input type="file" class="form-control" ref="fileInput" id="imageInput" @change="uploadImages">
+              <input type="file" class="form-control mb-2" ref="fileInput" id="imageInput" @change="uploadImages">
+                <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
             </div>
             <div class="mb-3">
               <label for="exampleFormControlTextarea1" class="form-label">Product Description</label>
@@ -60,7 +61,8 @@
           <tr>
             <th scope="col">Product Name</th>
             <th scope="col">Product Price</th>
-            <!-- <th scope="col">Product img</th> -->
+            <th scope="col">Product img</th>
+            <th scope="col">Image name</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -68,10 +70,11 @@
           <tr v-for="(product, id) in products" :key="id">
             <td>{{product.name}}</td>
             <td>${{product.price}}</td>
-            <!-- <td><img :src="product.image" alt=""></td> -->
+            <td><img :src="product.image" style="width: 2rem; height: 10%;" alt=""></td>
+            <td>{{product.imgName}}</td>
             <td>
               <i class="fa-solid fa-pen-to-square text-primary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="editProduct(product.id)"></i>
-              <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id)"></i>
+              <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id, index)"></i>
             </td>
           </tr>
         </tbody>
@@ -114,7 +117,7 @@
 import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase.js"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { getStorage, ref, uploadBytes, } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, child } from "firebase/storage";
 import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, snapshot, getDoc, orderBy, query } from "firebase/firestore";
 
 @Options({
@@ -127,10 +130,13 @@ export default class products extends Vue {
   name = ""
   price = null
   desc = ""
+  fileName = ""
+  imgName = []
   editName = ""
   editPrice = null
-  images = []
   editDesc = ""
+  images = []
+  storage = getStorage();
   currentProduct
   auth = getAuth()
   user = this.auth.currentUser
@@ -148,78 +154,124 @@ export default class products extends Vue {
                     id: doc.id,
                     name: doc.data().name,
                     price: doc.data().price,
-                    desc: doc.data().desc
+                    desc: doc.data().desc,
+                    image: doc.data().image,
+                    imgName: doc.data().imgName,
                 }
                 fbProducts.push(product)
             })
                 this.products = fbProducts
+                // this.imgName = fbProducts.imgName
+                // console.log(fbProducts.imgName);
             })
         }
     })
   }
 
-  async addProduct(){
-      if(this.name) {
+  async uploadImages() {
+    // const storage = getStorage();
+    const file = document.getElementById('imageInput').files[0];
+    const storageRef = ref(this.storage, 'products/' + file.name);
+
+    // 'file' comes from the Blob or File API
+    await uploadBytes(storageRef, file).then((snapshot) => {
+        // console.log('Uploaded a blob or file!');
+        this.images.push(snapshot);
+        this.fileName = snapshot.metadata.name
+        // console.log(this.images, this.fileName);
+      });
+
+    // console.log(storageRef);
+    // Get the download URL
+    getDownloadURL(storageRef)
+      .then((url) => {
+        // Insert url into an <img> tag to "download"
+        this.image = url
+        // console.log(this.image, 'comparing image and url', url);
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case 'storage/object-not-found':
+            // File doesn't exist
+            break;
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+  }
+
+  addProduct(){
+      if(this.name && this.price) {
           addDoc(this.productsCollectionRef, { 
               name: this.name,
               price: this.price,
               desc: this.desc,
               image: this.image,
+              imgName: this.fileName,
               date: Date.now(),
           })
+          // console.log(this.image)
         this.name = ""
         this.price = ""
         this.desc = ""
+        this.image = ""
         document.getElementById('imageInput').value = '';
-      }
+        }
   }
 
-  async uploadImages() {
-      // Get a reference to the file input element
-      const fileInput = this.$refs.fileInput;
+  // async uploadImages() {
+  //     // Get a reference to the file input element
+  //     const fileInput = this.$refs.fileInput;
 
-      // Get the selected files
-      const files = fileInput.files;
+  //     // Get the selected files
+  //     const files = fileInput.files;
 
-      // Iterate over the selected files
-      for (let i = 0; i < files.length; i++) {
-        // Get the current file
-        const file = files[i];
+  //     // Iterate over the selected files
+  //     for (let i = 0; i < files.length; i++) {
+  //       // Get the current file
+  //       const file = files[i];
 
-        // Create a new FileReader instance
-        const reader = new FileReader();
+  //       // Create a new FileReader instance
+  //       const reader = new FileReader();
 
-        // Listen for the 'load' event on the FileReader instance
-        reader.addEventListener('load', () => {
-          // The 'result' property of the FileReader instance contains the base64-encoded contents of the file
-          const fileData = reader.result;
+  //       // Listen for the 'load' event on the FileReader instance
+  //       reader.addEventListener('load', () => {
+  //         // The 'result' property of the FileReader instance contains the base64-encoded contents of the file
+  //         const fileData = reader.result;
 
-          // Now you can use the Firebase Storage API to upload the file data to your storage bucket
-          this.uploadImage(fileData, file.name);
-          this.image = fileData
-        });
+  //         // Now you can use the Firebase Storage API to upload the file data to your storage bucket
+  //         this.uploadImage(fileData, file.name);
+  //         this.image = fileData
+  //       });
 
-        // Read the contents of the file as a base64-encoded string
-        reader.readAsDataURL(file);
-      }
-      // const storage = getStorage();
-      // const file = document.getElementById('imageInput').files[0];
-      // const storageRef = ref(storage, file.name);
-      // uploadBytes(storageRef, file).then((snapshot) => {
-      //   console.log('Uploaded a blob or file!');
-      //   this.images.push(snapshot);
-      // });
-    }
-    async uploadImage(fileData, fileName) {
-      const storage = getStorage();
-      const storageRef = ref(storage, 'products/' + fileName);
+  //       // Read the contents of the file as a base64-encoded string
+  //       reader.readAsDataURL(file);
+  //     }
+  //     // const storage = getStorage();
+  //     // const file = document.getElementById('imageInput').files[0];
+  //     // const storageRef = ref(storage, file.name);
+  //     // uploadBytes(storageRef, file).then((snapshot) => {
+  //     //   console.log('Uploaded a blob or file!');
+  //     //   this.images.push(snapshot);
+  //     // });
+  //   }
+  //   async uploadImage(fileData, fileName) {
+  //     const storage = getStorage();
+  //     const storageRef = ref(storage, 'products/' + fileName);
 
-      // 'file' comes from the Blob or File API
-      uploadBytes(storageRef, fileData).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        this.images.push(snapshot);
-      });
-    }
+  //     // 'file' comes from the Blob or File API
+  //     uploadBytes(storageRef, fileData).then((snapshot) => {
+  //       console.log('Uploaded a blob or file!');
+  //       this.images.push(snapshot);
+  //     });
+  //   }
 
 
   editProduct(id){
@@ -238,8 +290,37 @@ export default class products extends Vue {
       });
   }
 
-  deleteProduct(id){
-      deleteDoc(doc(db, `profiles/${this.id}/products`, id));
+  deleteProduct(id, index){
+    // Create a reference to the file to delete
+    const storageRef = ref(this.storage)
+
+    const imagesRef = ref(storageRef, 'products');
+
+    const itemToBedeleted = this.products.find((data) => data.id == id);
+    // console.log(itemToBedeleted.imgName);
+
+    const spaceRef = ref(imagesRef, `${itemToBedeleted.imgName}`);
+
+    //Delete the file
+    deleteObject(spaceRef).then(() => {
+      console.log('deleted successfully');
+    }).catch((error) => {
+      console.log(error);
+    });
+    deleteDoc(doc(db, `profiles/${this.id}/products`, id));
+  }
+
+  deleteImage(){
+    // Create a reference to the file to delete
+    const imageRef = ref(this.storage, `${this.image}`)
+
+    // Delete the file
+    deleteObject(imageRef).then(() => {
+      this.image = "" 
+      console.log('deleted successfully');
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>
