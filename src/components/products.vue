@@ -37,10 +37,10 @@
               <label for="exampleFormControlInput1" class="form-label">Product price</label>
               <input type="number" class="form-control" v-model="price" id="exampleFormControlInput1" placeholder="Input Product price">
             </div>
-            <div class="mb-3">
+            <div class="mb-3 img-wrapp">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
               <input type="file" class="form-control mb-2" ref="fileInput" id="imageInput" @change="uploadImages">
-                <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
+                <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="p-1 delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
             </div>
             <div class="mb-3">
               <label for="exampleFormControlTextarea1" class="form-label">Product Description</label>
@@ -61,8 +61,8 @@
           <tr>
             <th scope="col">Product Name</th>
             <th scope="col">Product Price</th>
-            <th scope="col">Product img</th>
-            <th scope="col">Image name</th>
+            <!-- <th scope="col">Product img</th>
+            <th scope="col">Image name</th> -->
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -70,11 +70,11 @@
           <tr v-for="(product, id) in products" :key="id">
             <td>{{product.name}}</td>
             <td>${{product.price}}</td>
-            <td><img :src="product.image" style="width: 2rem; height: 10%;" alt=""></td>
-            <td>{{product.imgName}}</td>
+            <!-- <td><img :src="product.image" style="width: 2rem; height: 10%;" alt=""></td>
+            <td>{{product.imgName}}</td> -->
             <td>
               <i class="fa-solid fa-pen-to-square text-primary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="editProduct(product.id)"></i>
-              <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id, index)"></i>
+              <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id)"></i>
             </td>
           </tr>
         </tbody>
@@ -117,8 +117,8 @@
 import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase.js"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, child } from "firebase/storage";
-import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, snapshot, getDoc, orderBy, query } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, orderBy, query } from "firebase/firestore";
 
 @Options({
   components: {
@@ -131,7 +131,7 @@ export default class products extends Vue {
   price = null
   desc = ""
   fileName = ""
-  imgName = []
+  // imgName = []
   editName = ""
   editPrice = null
   editDesc = ""
@@ -223,7 +223,7 @@ export default class products extends Vue {
         this.desc = ""
         this.image = ""
         document.getElementById('imageInput').value = '';
-        }
+      }
   }
 
   // async uploadImages() {
@@ -290,7 +290,7 @@ export default class products extends Vue {
       });
   }
 
-  deleteProduct(id, index){
+  deleteProduct(id){
     // Create a reference to the file to delete
     const storageRef = ref(this.storage)
 
@@ -317,6 +317,7 @@ export default class products extends Vue {
     // Delete the file
     deleteObject(imageRef).then(() => {
       this.image = "" 
+      document.getElementById('imageInput').value = '';
       console.log('deleted successfully');
     }).catch((error) => {
       console.log(error);
