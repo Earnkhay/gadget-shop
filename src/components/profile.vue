@@ -64,6 +64,7 @@ export default class profile extends Vue {
   name = ""
   address = ""
   email = ""
+  images = []
   number = null
   formDisplay = false
   profileDisplay = true
@@ -98,7 +99,7 @@ export default class profile extends Vue {
 
     // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, file).then((snapshot) => {
-        // this.images.push(snapshot);
+        this.images.push(snapshot);
         // this.fileName = snapshot.metadata.name
         console.log('Uploaded a blob or file!');
       });
@@ -143,7 +144,7 @@ export default class profile extends Vue {
 
   updatePass(){
     sendPasswordResetEmail(this.auth, this.email)
-    .then((res) => {
+    .then(() => {
       // Password reset email sent!
       // ..
     })

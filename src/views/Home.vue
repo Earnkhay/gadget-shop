@@ -4,7 +4,7 @@
     <hero-section/>
     <my-products/>
     <about-us/>
-    <!-- <login/> -->
+    <mini-cart/>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import topnav from '@/components/UI/topnav.vue';
 import heroSection from '@/components/sections/heroSection.vue'
 import myProducts from '@/components/sections/myProducts.vue'
 import aboutUs from '@/components/sections/aboutUs.vue'
-// import login from '@/components/login.vue'
+import miniCart from '@/components/miniCart.vue'
 
 @Options({
   components: {
@@ -22,10 +22,10 @@ import aboutUs from '@/components/sections/aboutUs.vue'
     heroSection,
     myProducts,
     aboutUs,
-    // login
+    miniCart
   },
 })
-export default class HomeView extends Vue {}
+export default class Home extends Vue {}
 </script>
 
 <style scoped>

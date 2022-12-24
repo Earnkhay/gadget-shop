@@ -3,7 +3,7 @@
             <div class="text-bg-dark adminbar p-3" id="app" ref="jedi">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
                     <h5>Gadget Shop</h5>
-                    <i class="fa-solid fa-x" @click="toggleSideBar"></i> 
+                    <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
                 </div>
                 <div class="d-flex mb-3">
                     <div class="me-3">
@@ -31,10 +31,10 @@
                         </router-link>
                     </li>
                     <li class="nav-item mb-1">
-                        <a href="#" class="nav-link text-light">
+                        <router-link to="/admin/orders" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-cart-shopping p-1"></i>
                             Orders
-                        </a>
+                        </router-link>
                     </li>
                     <li class="nav-item mb-1">
                         <router-link to="/admin/profile" active-class="bg-primary" class="nav-link text-light">
@@ -65,10 +65,14 @@
                 </div> -->
             </div>
         <div class="content">
-            <div class="fs-5 p-2 menubar bg-dark" ref="menubar">
-                <button class="bg-secondary border-secondary shadow" @click="toggleSideBar">
-                    <i class="fa-solid fa-bars"></i>   
+            <div class="fs-5 py-3 px-4 menubar bg-dark text-light d-flex justify-content-between align-items-center" ref="menubar">
+                
+                <button class="bg-secondary border-secondary shadow menubar" @click="toggleSideBar">
+                    <i class="fa-solid fa-bars text-light"></i>   
                 </button>
+                <div>
+                    <h5>Gadget Shop</h5>
+                </div>
             </div>
               <div class="dashboard-content">
                 <router-view/>
@@ -114,18 +118,18 @@ export default class admin extends Vue {
             }
         }
     });
-     
     }
-      toggleSideBar(){
-        if (this.$refs.jedi.style.display == "none") {
-           this.$refs.jedi.style.display = "block"; 
-           this.$refs.jedi.style.position = "fixed"; 
-           this.$refs.menubar.style.display = "none"; 
-        } else {
-            this.$refs.jedi.style.display = "none";
-            this.$refs.menubar.style.display = "block"; 
-            this.$refs.jedi.style.position = "static";
-        }
+    
+    toggleSideBar(){
+    if (this.$refs.jedi.style.display == "none") {
+        this.$refs.jedi.style.display = "block"; 
+        this.$refs.jedi.style.position = "fixed"; 
+        this.$refs.menubar.style.display = "none"; 
+    } else {
+        this.$refs.jedi.style.display = "none";
+        this.$refs.menubar.style.display = "block"; 
+        this.$refs.jedi.style.position = "static";
+    }
     }
     logout(){
         const auth = getAuth();
@@ -150,6 +154,7 @@ export default class admin extends Vue {
     .content{
         min-height: 100vh;
         width: 100%;
+        margin-left: 260px;
     }
 
     .adminbar{
@@ -158,9 +163,7 @@ export default class admin extends Vue {
         max-width: 260px;
         /* transition: all 2s; */
         z-index: 1;
-        /* position: fixed;
-        top: 0; 
-        left: 0; */
+        position: fixed;
     }
 
     li:hover{
@@ -175,6 +178,10 @@ export default class admin extends Vue {
     @media screen and (max-width: 1000px){
         .adminbar{
             display: none;
+        }
+
+        .content{
+            margin-left: 0px;
         }
         .menubar{
             display: block;
