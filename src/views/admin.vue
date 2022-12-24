@@ -2,7 +2,8 @@
     <div class="d-flex" id="app">
             <div class="text-bg-dark adminbar p-3" id="app" ref="jedi">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
-                    <h5>Gadget Shop</h5>
+                    <!-- <h5>Gadget shop</h5> -->
+                    <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
                     <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
                 </div>
                 <div class="d-flex mb-3">
@@ -82,10 +83,10 @@
   
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import sideBar from '@/components/UI/sideBar.vue'
-import { db } from "@/firebase.js"
+import { db } from "@/firebase"
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { onSnapshot, doc } from "firebase/firestore";
 
@@ -98,7 +99,7 @@ import { onSnapshot, doc } from "firebase/firestore";
 export default class admin extends Vue {
     auth = getAuth();
     user = this.auth.currentUser
-    id = this.user.uid
+    id = this.user!.uid
     name = ""
     email = ""
     photoURL = ""
@@ -106,30 +107,35 @@ export default class admin extends Vue {
     created(){
      onAuthStateChanged(this.auth, (user) => {
         if (user) {
-            this.email = user.email;
+            this.email = user.email || '';
             if(user.displayName != null && user.photoURL != null){
                 this.name = user.displayName,
                 this.photoURL = user.photoURL
-            }else {
-                onSnapshot(doc(db, "profiles", user.uid), (doc) => {
+            }else{
+                onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
                     this.name = doc.data().name
                     this.photoURL = doc.data().photoURL
                 })
             }
         }
-    });
+      });
     }
+
+    $refs!: {
+        jedi: HTMLDivElement;
+        menubar: HTMLDivElement;
+    };
     
     toggleSideBar(){
-    if (this.$refs.jedi.style.display == "none") {
-        this.$refs.jedi.style.display = "block"; 
-        this.$refs.jedi.style.position = "fixed"; 
-        this.$refs.menubar.style.display = "none"; 
-    } else {
-        this.$refs.jedi.style.display = "none";
-        this.$refs.menubar.style.display = "block"; 
-        this.$refs.jedi.style.position = "static";
-    }
+        if (this.$refs.jedi.style.display == "none") {
+            this.$refs.jedi.style.display = "block"; 
+            this.$refs.jedi.style.position = "fixed"; 
+            this.$refs.menubar.style.display = "none"; 
+        } else {
+            this.$refs.jedi.style.display = "none";
+            this.$refs.menubar.style.display = "block"; 
+            this.$refs.jedi.style.position = "static";
+        }
     }
     logout(){
         const auth = getAuth();
@@ -147,7 +153,7 @@ export default class admin extends Vue {
 
 <style scoped>
     #app{
-        min-height: 100vh;
+        /* min-height: 100vh; */
         overflow: hidden;
     }
 

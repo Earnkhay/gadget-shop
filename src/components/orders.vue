@@ -7,7 +7,7 @@
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, inventore id. Tenetur, eligendi. Amet magnam ducimus accusantium dolor, vel eos.</p>
           </div>
           <div class="col">
-            <img src="../assets/undraw_Features_overview_re_2w78.png" alt="" class="img-fluid">
+            <img src="../assets/undraw_web_shopping_re_owap.png" alt="" class="img-fluid">
           </div>
         </div>
       </div>

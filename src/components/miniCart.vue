@@ -22,7 +22,10 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
-            <button type="button" class="btn btn-primary">Checkout</button>
+            <button class="btn btn-primary" @click="checkout" data-bs-dismiss="modal" aria-label="Close">
+                Checkout
+            </button>
+            
         </div>
         </div>
     </div>
@@ -37,6 +40,10 @@ import { Options, Vue } from 'vue-class-component';
     components: {
     },
 })
-export default class miniCart extends Vue {}
+export default class miniCart extends Vue {
+    checkout(){
+        this.$router.push('/checkout')
+    }
+}
 </script>
 

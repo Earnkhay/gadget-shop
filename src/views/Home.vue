@@ -28,8 +28,8 @@ import miniCart from '@/components/miniCart.vue'
 export default class Home extends Vue {}
 </script>
 
-<style scoped>
+<!-- <style scoped>
   #app{
     min-height: 100vh;
   }
-</style>
+</style> -->
