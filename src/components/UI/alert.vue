@@ -2,7 +2,6 @@
     <div :class="[alertType == 'Success' ? 'bg-success' : 'bg-danger']" class="alertComp">
         <p class="mt-1 mb-1"><span class="pe-2"><i class="fa-solid" :class="[alertType == 'Success' ? 'fa-circle-check' : 'fa-circle-exclamation']"></i></span>{{alertText}}</p>
     </div>
-    <router-view/>
 </template>
 
 <script lang="ts">
@@ -15,7 +14,19 @@
     })
 
     export default class alert extends Vue {
-        
+//         alertType!: string;
+//   alertText!: string;
+//   data() {
+//     return {
+//       alertType: 'Success',
+//       alertText: '',
+//     };
+//   }
+        // alertType = "";
+        // alertText = "";
+
+        // alertType = '';
+        // alertText = '';
     }
 </script>
 

@@ -48,7 +48,7 @@
 
 <script>
 import { Options, Vue } from 'vue-class-component';
-import { db } from "@/firebase.js"
+import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
