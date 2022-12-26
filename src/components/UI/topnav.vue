@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-transparent border-bottom shadow py-4 mb-3">
     <div class="container">
-      <a class="navbar-brand" href="#"><h2> Gadget Shop</h2></a>
+      <router-link class="navbar-brand" to="/"><h2> Gadget Shop</h2></router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -9,11 +9,11 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <form class="d-flex h-50 w-50 mt-2 bg-secondary rounded-3 align-items-center" role="search">
+          <!-- <form class="d-flex h-50 w-50 mt-2 bg-secondary rounded-3 align-items-center" role="search">
             <input class="form-control border-secondary rounded-start" type="search" placeholder="what are you looking for...." aria-label="Search">
             <button class="btn" type="submit"><span class="d-flex align-items-center"><i class="fa-solid fa-magnifying-glass me-2"></i>Search</span></button>
-          </form>
-          <li class="nav-item dropdown p-2">
+          </form> -->
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Account
             </a>
@@ -28,9 +28,16 @@
               
             </ul>
           </li>
-          <li class="nav-item d-flex align-items-center p-2">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <a class="nav-link link-dark" href="#">Cart</a>
+          <li class="nav-item d-flex align-items-center mx-3">
+            <router-link to="/cart" class="link-dark p-1">
+              <i class="fa-solid fa-cart-shopping position-relative fs-5">
+              <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;" v-if="this.$store.state.cart.length">
+                {{this.$store.state.cart.length}}
+                <span class="visually-hidden">unread messages</span>
+              </span>
+            </i>
+            </router-link>
+            
           </li>
           <li class="nav-item d-flex align-items-center">
             <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Get started</button>
@@ -42,7 +49,7 @@
   <login/>
 </template>
 
-<script lang="ts">
+<script>
 import { Options, Vue } from 'vue-class-component';
 import login from '@/components/login.vue'
 

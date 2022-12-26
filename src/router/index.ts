@@ -5,7 +5,7 @@ import overview from '@/components/overview.vue'
 import products from '@/components/products.vue'
 import profile from '@/components/profile.vue'
 import orders from '@/components/orders.vue'
-import checkout from '@/views/checkout.vue'
+import cart from '@/views/cart.vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const routes: Array<RouteRecordRaw> = [
@@ -45,9 +45,9 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/checkout',
-    name: 'checkout',
-    component: checkout
+    path: '/cart',
+    name: 'cart',
+    component: cart
   },
   {
     path: '/about',
