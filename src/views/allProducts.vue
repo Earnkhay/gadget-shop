@@ -1,8 +1,10 @@
 <template>
-  <div class="bg-light p-5">
+  <topnav/>
+  <div class="product">
     <h1 class="text-center mb-4">Our Products</h1>
-    <carousel :breakpoints="breakpoints">
-        <slide v-for="(item, id) in items" :key="id">
+    <div class="container d-flex justify-content-between">
+      <div class="row justify-content-center">
+        <div class="col-md-4 mb-3 col-sm-6" v-for="(item, id) in items" :key="id">
           <div class="card" style="width: 18rem; height: 100%;">
             <img :src="item.thumbnail" style="min-height: 60%;" @click="itemDetail(item)" class="card-img-top" alt="Product image">
             <div class="card-body text-start">
@@ -13,12 +15,9 @@
               <add-to-cart :itemId="item.id" :price="item.price" :title="item.title" :img="item.thumbnail"/>
             </div>
           </div>
-        </slide>
-        <template #addons>
-          <navigation class="text-light bg-dark rounded-4"/>
-          <pagination />
-        </template>
-    </carousel>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,31 +26,16 @@ import 'vue3-carousel/dist/carousel.css'
 import { Options, Vue } from 'vue-class-component';
 import axios from 'axios'
 import addToCart from '@/components/addToCart.vue'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import topnav from '@/components/UI/topnav.vue'
 
 @Options({
   components: { 
-      Carousel,
-      Slide,
-      Pagination,
-      Navigation, 
       addToCart,
+      topnav
   },
   })
-export default class myProducts extends Vue {
+export default class allProducts extends Vue {
     items = []
-
-    breakpoints = {
-    200: {
-      itemsToShow: 1,
-    },
-    700: {
-      itemsToShow: 2,
-    },
-    1024: {
-      itemsToShow: 3,
-    },
-  }
 
   created(){
     axios.get('https://dummyjson.com/products/category/smartphones', {
