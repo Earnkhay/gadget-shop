@@ -1,4 +1,4 @@
-import { createStore, ActionContext, Mutation } from 'vuex'
+import { createStore, ActionContext, Mutation, } from 'vuex'
 
 interface items{
   // [x: string]: any;
@@ -11,7 +11,7 @@ interface items{
 }
 
 interface CartState{
-  cart: items[] 
+  cart: items[],
 }
 
 // type Context = {
@@ -19,10 +19,12 @@ interface CartState{
 // };
 
 const cart = window.localStorage.getItem('cart');
+const item = window.localStorage.getItem('item');
 
 export default createStore({
   state: {
-    cart: cart ? JSON.parse(cart) : []
+    cart: cart ? JSON.parse(cart) : [],
+    item: item ? JSON.parse(item) : {}
   } as CartState,
   getters: {
     cartTotal(state) {
@@ -31,30 +33,30 @@ export default createStore({
   },
   mutations: {
     //mutations accept 2 parameter; state and the data you're passing
-    //mutations are methods
     addToCart(state: CartState, item: items): void{
       const itemExists = state.cart.find(product => product.itemId == item.itemId)
-
       if(itemExists){
         itemExists.quantity++;
-        // const price = itemExists.price * itemExists.quantity
-        // console.log(price);
       }else{
         state.cart.push(item);
       }
       window.localStorage.setItem('cart', JSON.stringify(state.cart))
       // this.dispatch('saveData')
-      // console.log(item);
     },
     // saveData(state: CartState){
     //   window.localStorage.setItem('cart', JSON.stringify(state.cart))
     // }
+
     removeFromCart(state:CartState, item:items){
       const index = state.cart.indexOf(item);
       state.cart.splice(index, 1)
-      console.log(index);
       window.localStorage.setItem('cart', JSON.stringify(state.cart))
-    }
+    },
+    setItem(state: any, item: any) {
+      state.item = item;
+      window.localStorage.setItem('item', JSON.stringify(state.item))
+    },
+
   },
   actions: {
   },

@@ -143,9 +143,9 @@ export default class admin extends Vue {
             // Sign-out successful.
             // console.log('hey', auth);
             this.$router.replace('/')
-        }).catch((error) => {
+        }).catch(() => {
             // An error happened.
-            console.log(error);
+            // console.log(error);
         });
     }
 }

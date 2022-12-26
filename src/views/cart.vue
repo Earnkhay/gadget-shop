@@ -4,7 +4,7 @@
     <div class="container text-center mt-5 fw-bold p-5 lh-lg" v-if="!this.$store.state.cart.length">
       <i class="fa-solid fa-cart-shopping fs-1 bg-secondary rounded-circle p-4 mb-3"></i>
       <h4>Your Cart is empty</h4>
-      <p>Browse our products and pick your choice</p>
+      <p>Browse and explore our products</p>
       <router-link class="btn btn-lg btn-primary" to="/">Start Shopping</router-link>
     </div>
     <div v-else>

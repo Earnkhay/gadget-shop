@@ -27,4 +27,4 @@ initializeApp(firebaseConfig);
 app.use(VueAxios, axios)
 app.provide('axios', app.config.globalProperties.axios)
 
-createApp(App).use(store).use(router).mount('#app')
+app.use(store).use(router).mount('#app')

@@ -5,6 +5,7 @@
     <my-products/>
     <about-us/>
     <mini-cart/>
+    <login/>
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import heroSection from '@/components/sections/heroSection.vue'
 import myProducts from '@/components/sections/myProducts.vue'
 import aboutUs from '@/components/sections/aboutUs.vue'
 import miniCart from '@/components/miniCart.vue'
+import login from '@/components/login.vue'
 
 @Options({
   components: {
@@ -22,7 +24,8 @@ import miniCart from '@/components/miniCart.vue'
     heroSection,
     myProducts,
     aboutUs,
-    miniCart
+    miniCart,
+    login
   },
 })
 export default class Home extends Vue {}

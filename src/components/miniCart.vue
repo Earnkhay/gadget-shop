@@ -26,7 +26,6 @@
             <button class="btn btn-primary" @click="checkout" data-bs-dismiss="modal" aria-label="Close">
                 View Cart and Checkout
             </button>
-            
         </div>
         </div>
     </div>
