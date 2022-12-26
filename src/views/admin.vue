@@ -83,7 +83,7 @@
   
 </template>
 
-<script lang="ts">
+<script>
 import { Options, Vue } from 'vue-class-component';
 import sideBar from '@/components/UI/sideBar.vue'
 import { db } from "@/firebase"
@@ -99,7 +99,7 @@ import { onSnapshot, doc } from "firebase/firestore";
 export default class admin extends Vue {
     auth = getAuth();
     user = this.auth.currentUser
-    id = this.user!.uid
+    id = this.user.uid
     name = ""
     email = ""
     photoURL = ""
@@ -121,10 +121,10 @@ export default class admin extends Vue {
       });
     }
 
-    $refs!: {
-        jedi: HTMLDivElement;
-        menubar: HTMLDivElement;
-    };
+    // $refs!: {
+    //     jedi: HTMLDivElement;
+    //     menubar: HTMLDivElement;
+    // };
     
     toggleSideBar(){
         if (this.$refs.jedi.style.display == "none") {

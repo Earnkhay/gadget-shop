@@ -9,21 +9,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="container d-flex" v-for="(item, id) in this.$store.state.cart" :key="id">
+            <div class="container-fluid d-flex" v-for="(item, id) in this.$store.state.cart" :key="id">
                 <div class="me-3">
-                <img :src="item.img" alt="product image" class="img-fluid" width="55" height="55"> 
+                    <img :src="item.img" alt="product image" class="img-fluid" width="55" height="55"> 
                 </div>
                 <div>
                     <h4>{{item.name}}</h4>
                     <p>${{item.price}}</p>
                     <p>Quantity: {{item.quantity}}</p>
                 </div>
+                <div class="ms-auto" style="cursor: pointer;" @click="$store.commit('removeFromCart', item)">X</div>
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue shopping</button>
             <button class="btn btn-primary" @click="checkout" data-bs-dismiss="modal" aria-label="Close">
-                Checkout
+                View Cart and Checkout
             </button>
             
         </div>
@@ -42,7 +43,7 @@ import { Options, Vue } from 'vue-class-component';
 })
 export default class miniCart extends Vue {
     checkout(){
-        this.$router.push('/checkout')
+        this.$router.push('/cart')
     }
 }
 </script>

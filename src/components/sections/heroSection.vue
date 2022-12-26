@@ -6,8 +6,8 @@
       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio molestias, impedit aliquid est optio, 
         non officiis quas quasi nobis blanditiis atque a, repellat et esse dolore cupiditate magnam numquam vitae?</p>
       <div class="d-flex">
-        <button type="button" class="btn btn-lg btn-primary me-3">Get started</button>
-        <button type="button" class="btn btn-lg btn-outline-primary">Primary</button>
+        <button type="button" class="btn btn-lg btn-primary me-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Get started</button>
+        <button type="button" class="btn btn-lg btn-outline-primary">Products</button>
       </div>
     </div>
     <div class="col-md-7">
