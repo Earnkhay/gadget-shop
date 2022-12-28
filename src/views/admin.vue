@@ -67,13 +67,13 @@
             </div>
         <div class="content">
             <div class="fs-5 py-3 px-4 menubar bg-dark text-light d-flex justify-content-between align-items-center" ref="menubar">
-                
+                <div>
+                    <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
+                    <!-- <h5>Gadget Shop</h5> -->
+                </div>
                 <button class="bg-secondary border-secondary shadow menubar" @click="toggleSideBar">
                     <i class="fa-solid fa-bars text-light"></i>   
                 </button>
-                <div>
-                    <h5>Gadget Shop</h5>
-                </div>
             </div>
               <div class="dashboard-content">
                 <router-view/>
@@ -119,6 +119,7 @@ export default class admin extends Vue {
             }
         }
       });
+      this.$router.push('/admin/overview')
     }
 
     // $refs!: {
@@ -140,12 +141,9 @@ export default class admin extends Vue {
     logout(){
         const auth = getAuth();
         signOut(auth).then(() => {
-            // Sign-out successful.
-            // console.log('hey', auth);
             this.$router.replace('/')
         }).catch(() => {
             // An error happened.
-            // console.log(error);
         });
     }
 }
