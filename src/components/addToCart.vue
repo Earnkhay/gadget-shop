@@ -2,23 +2,18 @@
     <div id="cart">
         <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#miniCart" @click="addToCart">Add to Cart</button>
     </div>
-    <mini-cart/>
 </template>
 
 <script>
 import { Options, Vue } from 'vue-class-component';
-import miniCart from '@/components/miniCart.vue'
 
 @Options({
     props: {
         price: Number,
         title: String,
-        itemId: Number,
-        img: String
+        itemId: String,
+        img: String,
     },
-    components: {
-        miniCart
-    }
 })
 export default class addToCart extends Vue {
     item = {
@@ -28,9 +23,9 @@ export default class addToCart extends Vue {
       img: this.img,
       quantity: 1
     }
-    
     addToCart(){
         this.$store.commit('addToCart', this.item)
+        // console.log(this.item, ' add to cart itrm');
     }
 }
 </script>

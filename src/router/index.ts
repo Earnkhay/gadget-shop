@@ -59,6 +59,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'allProducts',
     component: () => import('../views/allProducts.vue')
   },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('../views/checkout.vue'),
+    meta: {
+      requiresAuth: true
+    },
+  },
 ]
 
 const router = createRouter({
@@ -81,7 +89,6 @@ const getCurrentUser = () => {
     )
   })
 }
-
 
 //navigation guard
 // router.beforeEach(async (to) => {

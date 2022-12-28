@@ -39,7 +39,7 @@
             </div>
             <div class="mb-3 img-wrapp">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-              <input type="file" class="form-control mb-2" ref="fileInput" id="imageInput" @change="uploadImages">
+              <input type="file" class="form-control mb-2" id="imageInput" @change="uploadImages">
                 <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="p-1 delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
             </div>
             <div class="mb-3">
@@ -61,8 +61,8 @@
           <tr>
             <th scope="col">Product Name</th>
             <th scope="col">Product Price</th>
-            <!-- <th scope="col">Product img</th>
-            <th scope="col">Image name</th> -->
+            <th scope="col">Product img</th>
+            <!-- <th scope="col">Image name</th> -->
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -70,8 +70,8 @@
           <tr v-for="(product, id) in products" :key="id">
             <td>{{product.name}}</td>
             <td>${{product.price}}</td>
-            <!-- <td><img :src="product.image" style="width: 2rem; height: 10%;" alt=""></td>
-            <td>{{product.imgName}}</td> -->
+            <td><img :src="product.image" style="width: 2rem; height: 10%;" alt=""></td>
+            <!-- <td>{{product.imgName}}</td> -->
             <td>
               <i class="fa-solid fa-pen-to-square text-primary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="editProduct(product.id)"></i>
               <i class="fa-solid fa-trash text-danger ms-2" @click.prevent="deleteProduct(product.id)"></i>
@@ -98,6 +98,16 @@
                 <label for="exampleFormControlInput1" class="form-label">Product price</label>
                 <input type="number" class="form-control" v-model="editPrice" id="exampleFormControlInput1">
               </div>
+              <!-- <div class="mb-3 img-wrapp">
+                <label for="exampleFormControlInput1" class="form-label">Product Image</label>
+                <input type="file" class="form-control mb-2" id="editImgInput" @change="editImage">
+                  <img :src="url" style="width: 5rem; height: 30%;" alt="preview image"><span class="p-1 delete-img" style="cursor: pointer;" @click="delEditImage()">X</span>
+              </div> -->
+              <div class="mb-3 img-wrapp">
+                <label for="exampleFormControlInput1" class="form-label">Product Image</label>
+                <input type="file" class="form-control mb-2" id="imageInput" @change="uploadImages">
+                  <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="p-1 delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
+              </div>
               <div class="mb-3">
                   <label for="exampleFormControlTextarea1" class="form-label">Description</label>
                   <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="editDesc"></textarea>
@@ -105,7 +115,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct">Update Task</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct">Update Product</button>
           </div>
           </div>
       </div>
@@ -127,11 +137,12 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, orderBy, que
 export default class products extends Vue {
   products = []
   image = ""
+  url = ""
   name = ""
   price = null
   desc = ""
   fileName = ""
-  // imgName = []
+  imgName = ""
   editName = ""
   editPrice = null
   editDesc = ""
@@ -141,7 +152,7 @@ export default class products extends Vue {
   auth = getAuth()
   user = this.auth.currentUser
   id = this.user.uid
-  productsCollectionRef = collection(db, `profiles/${this.id}/products`)
+  productsCollectionRef = collection(db, `products`)
   productsCollectionQuery = query(this.productsCollectionRef, orderBy('date', 'desc'));
 
   mounted(){ 
@@ -161,33 +172,26 @@ export default class products extends Vue {
                 fbProducts.push(product)
             })
                 this.products = fbProducts
-                // this.imgName = fbProducts.imgName
-                // console.log(fbProducts.imgName);
             })
         }
     })
   }
 
   async uploadImages() {
-    // const storage = getStorage();
     const file = document.getElementById('imageInput').files[0];
     const storageRef = ref(this.storage, 'products/' + file.name);
 
     // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, file).then((snapshot) => {
-        // console.log('Uploaded a blob or file!');
         this.images.push(snapshot);
         this.fileName = snapshot.metadata.name
-        // console.log(this.images, this.fileName);
       });
 
-    // console.log(storageRef);
     // Get the download URL
     getDownloadURL(storageRef)
       .then((url) => {
         // Insert url into an <img> tag to "download"
         this.image = url
-        // console.log(this.image, 'comparing image and url', url);
       })
       .catch((error) => {
         switch (error.code) {
@@ -208,7 +212,7 @@ export default class products extends Vue {
   }
 
   addProduct(){
-      if(this.name && this.price) {
+      if(this.name && this.price && this.desc && this.image) {
           addDoc(this.productsCollectionRef, { 
               name: this.name,
               price: this.price,
@@ -217,16 +221,17 @@ export default class products extends Vue {
               imgName: this.fileName,
               date: Date.now(),
           })
-          // console.log(this.image)
         this.name = ""
         this.price = ""
         this.desc = ""
         this.image = ""
         document.getElementById('imageInput').value = '';
+      }else{
+        alert('please input all required details')
       }
   }
 
-  // async uploadImages() {
+  // async editImages() {
   //     // Get a reference to the file input element
   //     const fileInput = this.$refs.fileInput;
 
@@ -247,47 +252,55 @@ export default class products extends Vue {
   //         const fileData = reader.result;
 
   //         // Now you can use the Firebase Storage API to upload the file data to your storage bucket
-  //         this.uploadImage(fileData, file.name);
-  //         this.image = fileData
+  //         this.editImage(fileData, file.name);
+  //         // this.url = fileData
+  //         // console.log(fileData);
   //       });
 
   //       // Read the contents of the file as a base64-encoded string
   //       reader.readAsDataURL(file);
   //     }
-  //     // const storage = getStorage();
-  //     // const file = document.getElementById('imageInput').files[0];
-  //     // const storageRef = ref(storage, file.name);
-  //     // uploadBytes(storageRef, file).then((snapshot) => {
-  //     //   console.log('Uploaded a blob or file!');
-  //     //   this.images.push(snapshot);
-  //     // });
-  //   }
-  //   async uploadImage(fileData, fileName) {
-  //     const storage = getStorage();
-  //     const storageRef = ref(storage, 'products/' + fileName);
+  // }
+    // async editImage() {
+    //   const storage = getStorage();
+    //   const file = document.getElementById('editImgInput').files[0];
+    //   const storageRef = ref(storage, 'products/' + file.name);
+    //   this.imgName = file.name
 
-  //     // 'file' comes from the Blob or File API
-  //     uploadBytes(storageRef, fileData).then((snapshot) => {
-  //       console.log('Uploaded a blob or file!');
-  //       this.images.push(snapshot);
-  //     });
-  //   }
+    //   uploadBytes(storageRef, file).then((snapshot) => {
+    //     this.images.push(snapshot);
+    //   });
 
+    // getDownloadURL(storageRef)
+    //   .then((url) => {
+    //     this.url = url
+    //     console.log(this.url);
+    //   })
+    //   .catch(() => {
+    //     //
+    //   });
+    // }
 
   editProduct(id){
       const taskToUpdate = this.products.find((product) => product.id === id)
       this.editName = taskToUpdate.name,
       this.editPrice = taskToUpdate.price,
-      this.editDesc = taskToUpdate.desc
+      this.editDesc = taskToUpdate.desc,
+      this.image = taskToUpdate.image,
+      // this.fileName = taskToUpdate.imgName,
       this.currentProduct = taskToUpdate
   }
 
   async updateProduct(){
-      await updateDoc(doc(db, `profiles/${this.id}/products`, this.currentProduct.id), {
+      await updateDoc(doc(db, `products`, this.currentProduct.id), {
           name: this.editName,
           price: this.editPrice,
-          desc: this.editDesc
+          desc: this.editDesc,
+          image: this.image,
+          imgName: this.fileName,
       });
+      // this.url = "" 
+      // document.getElementById('editImgInput').value = '';
   }
 
   deleteProduct(id){
@@ -297,19 +310,30 @@ export default class products extends Vue {
     const imagesRef = ref(storageRef, 'products');
 
     const itemToBedeleted = this.products.find((data) => data.id == id);
-    // console.log(itemToBedeleted.imgName);
 
     const spaceRef = ref(imagesRef, `${itemToBedeleted.imgName}`);
 
     //Delete the file
     deleteObject(spaceRef).then(() => {
       console.log('deleted successfully');
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
+      // console.log(error);
     });
-    deleteDoc(doc(db, `profiles/${this.id}/products`, id));
+    deleteDoc(doc(db, `products`, id));
   }
 
+  // delEditImage(){
+  //   // Create a reference to the file to delete
+  //   const imageRef = ref(this.storage, `${this.url}`)
+
+  //   // Delete the file
+  //   deleteObject(imageRef).then(() => {
+  //     this.url = "" 
+  //     document.getElementById('editImgInput').value = '';
+  //   }).catch(() => {
+  //     // console.log(error);
+  //   });
+  // }
   deleteImage(){
     // Create a reference to the file to delete
     const imageRef = ref(this.storage, `${this.image}`)
@@ -318,9 +342,8 @@ export default class products extends Vue {
     deleteObject(imageRef).then(() => {
       this.image = "" 
       document.getElementById('imageInput').value = '';
-      console.log('deleted successfully');
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
+      // console.log(error);
     });
   }
 }

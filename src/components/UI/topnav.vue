@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-transparent border-bottom shadow py-4 mb-3">
+  <nav class="navbar navbar-expand-lg fixed-top border-bottom shadow py-4" style="background-color: rgb(248, 243, 244);">
     <div class="container">
       <router-link class="navbar-brand" to="/"><h2> Gadget Shop</h2></router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,14 +14,17 @@
             <button class="btn" type="submit"><span class="d-flex align-items-center"><i class="fa-solid fa-magnifying-glass me-2"></i>Search</span></button>
           </form> -->
           
-          <li class="nav-item d-flex align-items-center">
+          <li class="nav-item d-flex align-items-center me-3 p-2">
+            <router-link to="/" class="text-decoration-none link-dark">Home</router-link>
+          </li>
+          <li class="nav-item d-flex align-items-center me-3 p-2">
             <router-link to="/products" class="text-decoration-none link-dark">Products</router-link>
           </li>
-          <li class="nav-item d-flex align-items-center mx-3">
+          <li class="nav-item d-flex align-items-center me-3 p-2">
             <router-link to="/cart" class="link-dark p-1 text-decoration-none">
               <i class="fa-solid fa-cart-shopping position-relative fs-5 me-1">
-                <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;" v-if="this.$store.state.cart.length">
-                  {{this.$store.state.cart.length}}
+                <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;" v-if="cartQuantity">
+                  {{cartQuantity}}
                   <span class="visually-hidden">unread messages</span>
                 </span>
               </i>
@@ -29,7 +32,7 @@
             </router-link>
             
           </li>
-          <li class="nav-item dropdown" v-if="isLoggedIn">
+          <li class="nav-item dropdown p-2" v-if="isLoggedIn">
             <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Hi, {{name}}
             </a>
@@ -69,11 +72,9 @@ import { onSnapshot, doc } from "firebase/firestore";
 
 export default class topnav extends Vue {
   auth = getAuth()
-  // user = this.auth.currentUser
-  // id = this.user.uid
   isLoggedIn = false
   name = ""
- created(){
+  created(){
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         this.isLoggedIn = true;
@@ -88,6 +89,10 @@ export default class topnav extends Vue {
         this.isLoggedIn = false;
       }
     })
+  }
+
+  get cartQuantity() {
+    return this.$store.getters.cartQuantity
   }
 
   logOutAction(){
