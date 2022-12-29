@@ -80,7 +80,7 @@ export default class myProducts extends Vue {
     },
   }
 
-  created(){
+  mounted(){
     // axios.get('https://dummyjson.com/products/category/smartphones', {
     //     // timeout: 5000
     // })
@@ -89,9 +89,7 @@ export default class myProducts extends Vue {
     //   })
     //   .catch(err => console.error(err));
 
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-          onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
+    onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
           const fbProducts = []
           querySnapshot.forEach((doc) => {
               const product = {
@@ -106,8 +104,6 @@ export default class myProducts extends Vue {
           })
               this.products = fbProducts
           })
-      }
-    })
   }
 
   itemDetail(product){

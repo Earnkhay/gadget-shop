@@ -1,6 +1,7 @@
 // import { createStore, ActionContext, Mutation, } from 'vuex'
 import { createStore } from 'vuex'
 
+
 interface items{
   price: number,
   title: string,
@@ -45,7 +46,7 @@ export default createStore({
         state.cart.push(item);
       }
       window.localStorage.setItem('cart', JSON.stringify(state.cart))
-      // this.dispatch('saveData')
+      // this.commit('saveData')
     },
 
     // saveData(state: CartState){
@@ -60,6 +61,10 @@ export default createStore({
     setItem(state, product) {
       state.product = product;
       window.localStorage.setItem('product', JSON.stringify(state.product))
+    },
+    clearCart(state: CartState) {
+      state.cart = [];
+      window.localStorage.removeItem('cart');
     },
 
   },

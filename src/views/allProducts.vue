@@ -54,8 +54,6 @@ export default class allProducts extends Vue {
     //   })
     //   .catch(err => console.error(err));
 
-      onAuthStateChanged(this.auth, (user) => {
-      if (user) {
         onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
         const fbProducts = []
         querySnapshot.forEach((doc) => {
@@ -71,8 +69,6 @@ export default class allProducts extends Vue {
         })
             this.products = fbProducts
         })
-      }
-    })
   }
 
   itemDetail(product){

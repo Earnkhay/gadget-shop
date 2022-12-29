@@ -24,22 +24,11 @@
         </div>
         <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">Billing address</h4>
-            <form class="needs-validation" novalidate="">
+            <form class="needs-validation">
             <div class="row g-3">
-                <div class="col-sm-6">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
-                </div>
-
-                <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Last name</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
-                </div>
-
                 <div class="col-12">
-                    <label for="username" class="form-label">User name</label>
+                    <label for="username" class="form-label">Name</label>
                     <div class="input-group has-validation">
-                        <span class="input-group-text">@</span>
                         <input type="text" class="form-control" id="username" v-model="name" required readonly>
                     </div>
                 </div>
@@ -51,12 +40,12 @@
 
                 <div class="col-12">
                     <label for="address" class="form-label">Your address</label>
-                    <input type="text" class="form-control" id="address" v-model="address" required="">
+                    <input type="text" class="form-control" id="address" v-model="address" required>
                 </div>
 
                 <div class="col-md-5">
                     <label for="country" class="form-label">Country</label>
-                    <select class="form-select text-dark" id="country" required="">
+                    <select class="form-select" id="country" v-model="selectedCountry" required>
                         <option value="">Select a Country</option>
                         <option v-for="(country, index) in countries" :key="index" class="text-dark">{{ country.name.common }}</option>
                     </select>
@@ -64,12 +53,12 @@
 
                 <div class="col-md-4">
                     <label for="address" class="form-label">Your state</label>
-                    <input type="text" class="form-control" id="address" required="" placeholder="Lagos">
+                    <input type="text" class="form-control" id="state" v-model="state" placeholder="Lagos" required>
                 </div>
 
                 <div class="col-md-3">
                     <label for="zip" class="form-label">Postal code</label>
-                    <input type="text" class="form-control" id="zip" placeholder="" required="">
+                    <input type="text" class="form-control" id="zip" placeholder="" required>
                 </div>
             </div>
 
@@ -88,42 +77,43 @@
             <hr class="my-4">
 
             <h4 class="mb-3">Payment method</h4>
+            <!-- <input type="date" v-model="date"> -->
 
             <div class="my-3">
                 <div class="form-check">
-                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="debitcard" v-model="selectedOption" checked="" required="">
+                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="debitcard" v-model="selectedOption" checked="" required>
                     <label class="form-check-label" for="debit">Debit card</label>
                 </div>
                 <div class="form-check">
-                    <input id="cash" name="paymentMethod" type="radio" class="form-check-input" value="cash" v-model="selectedOption" required="">
+                    <input id="cash" name="paymentMethod" type="radio" class="form-check-input" value="cash" v-model="selectedOption" required>
                     <label class="form-check-label" for="cash">Pay on delivery</label>
                 </div>
                 <!-- <div class="form-check">
-                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="paypal" v-model="selectedOption" required="">
+                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="paypal" v-model="selectedOption" required>
                     <label class="form-check-label" for="paypal">PayPal</label>
                 </div> -->
             </div>
 
             <div class="row gy-3" v-if="selectedOption === 'debitcard'">
                 <div class="col-md-6">
-                    <label for="cc-name" class="form-label">name on the card</label>
-                    <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                    <label for="cc-name" class="form-label">Name on the card</label>
+                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
                     <small class="text-muted">Full name as displayed on the card</small>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="cc-number" class="form-label">card number</label>
-                    <input type="number" class="form-control" id="cc-number" placeholder="" required="">
+                    <label for="cc-number" class="form-label">Card number</label>
+                    <input type="number" maxlength="16" class="form-control" id="cc-number" required>
                 </div>
 
                 <div class="col-md-3">
                     <label for="cc-expiration" class="form-label">Expiration date</label>
-                    <input type="number" class="form-control" id="cc-expiration" placeholder="" required="">
+                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY" required>
                 </div>
 
                 <div class="col-md-3">
-                    <label for="cc-cvv" class="form-label">triple code (CVV)</label>
-                    <input type="number" class="form-control" id="cc-cvv" placeholder="" required="">
+                    <label for="cc-cvv" class="form-label">CVV</label>
+                    <input type="number" maxlength="3" class="form-control" id="cc-cvv" required>
                 <div class="invalid-feedback">
                     رمز الحماية مطلوب
                 </div>
@@ -132,7 +122,7 @@
 
             <hr class="my-4">
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Pay</button>
+            <button class="w-100 btn btn-primary btn-lg" type="submit" @click.prevent="placeOrder">Pay (${{cartTotal}})</button>
             </form>
         </div>
      </div>  
@@ -147,7 +137,7 @@ import myFooter from '@/components/UI/myFooter.vue'
 import { db } from "@/firebase"
 import axios from 'axios'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { onSnapshot, doc } from "firebase/firestore";
+import { onSnapshot, doc, addDoc, collection, query, orderBy } from "firebase/firestore";
 @Options({
     components: {
         topnav,
@@ -158,28 +148,29 @@ export default class checkout extends Vue {
     auth = getAuth()
     user = this.auth.currentUser
     id = this.user.uid
-    isLoggedIn = false
     selectedOption = ''
+    // date = ""
+    selectedCountry = ''
     sameAddress = false
     name = ""
     email = ""
     address = ""
+    state = ""
+    status = 'pending'
     countries = []
+    ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
+    ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
     created(){
         onAuthStateChanged(this.auth, (user) => {
             if (user) {
-                this.isLoggedIn = true;
                 this.email = user.email;
                 if(user.displayName != null){
                     this.name = user.displayName
                 }else{
                     onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
                         this.name = doc.data().name
-                        // this.address = doc.data().address
                     })
                 }
-            } else {
-                this.isLoggedIn = false;
             }
         })
         this.selectedOption = 'debitcard'
@@ -188,7 +179,6 @@ export default class checkout extends Vue {
         })
         .then((res) => {
             this.countries = res.data
-            // console.log(res.data);
         })
         .catch(err => console.error(err));
     }
@@ -200,13 +190,34 @@ export default class checkout extends Vue {
         }else{
             this.address = ''
         }
-        
     }
     get cartTotal() {
         return this.$store.getters.cartTotal
     }
     get cartQuantity() {
         return this.$store.getters.cartQuantity
+    }
+    
+    placeOrder(){
+        if (this.address != '' && this.state != '' && this.selectedCountry) {
+            console.log(this.address, this.state, this.selectedCountry);
+            addDoc(this.ordersCollectionRef, { 
+              address: this.address,
+              state: this.state,
+              country: this.selectedCountry,
+              cart: this.$store.state.cart,
+              PaymentMethod: this.selectedOption,
+              cartTotal: this.cartTotal,
+              cartQuantity: this.cartQuantity,
+              status: this.status,
+              date: Date.now(),
+            })
+            this.$router.push('/admin/orders')
+            this.$store.commit('clearCart');
+            console.log(this.cartTotal, this.cartQuantity, this.selectedOption);
+        }else{
+            alert('please input required details')
+        }
     }
 }
 </script>

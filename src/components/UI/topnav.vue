@@ -36,17 +36,12 @@
             <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Hi, {{name}}
             </a>
-            <!-- <a v-else class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Account
-            </a> -->
             <ul class="dropdown-menu">
-              <li><router-link class="dropdown-item" to="/admin">My Account</router-link></li>
-              <!-- <li v-else><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">My Account</a></li> -->
+              <li><router-link class="dropdown-item" to="/admin/overview">My Account</router-link></li>
               <li><a class="dropdown-item" href="#">Orders</a></li>
               <li><hr class="dropdown-divider"></li>
               <div class="text-center">
                 <li><a class="dropdown-item link-dark fw-bold" href="#" @click="logOutAction">Logout</a></li>
-                <!-- <li v-else><a class="dropdown-item link-dark fw-bold" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a></li> -->
               </div>
             </ul>
           </li>
