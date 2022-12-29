@@ -119,7 +119,7 @@ export default class admin extends Vue {
             }
         }
       });
-      this.$router.push('/admin/overview')
+    //   this.$router.push('/admin/overview')
     }
 
     // $refs!: {

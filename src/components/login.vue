@@ -171,14 +171,7 @@ export default class login extends Vue {
                 this.alertType = "Success"
                 this.alertShow = true
                 this.spinnerShow = true
-                this.$router.replace(`/admin`)
-                // setTimeout(() => {  
-                //         this.alertShow = false 
-                //         this.spinnerShow = false 
-                //         this.email = ''
-                //         this.password = '' 
-                //         this.name = '' 
-                // },3000) 
+                this.$router.replace(`/admin/profile`)
             })
             .catch((err) => {
                 this.alertType = "danger"
@@ -198,13 +191,6 @@ export default class login extends Vue {
                         this.alertTitle = "Email or password was incorrect";
                         break;
                 }
-                // setTimeout(() => {         
-                //         this.alertShow = false
-                //         this.spinnerShow = false
-                //         this.email = ''
-                //         this.password = ''
-                //         this.name = ''
-                // },3000) 
             });
         }else if(modalType == 'login'){
             signInWithEmailAndPassword(auth, this.email, this.password)
@@ -213,11 +199,7 @@ export default class login extends Vue {
                 this.alertType = "Success"
                 this.alertShow = true
                 this.spinnerShow = true
-                this.$router.replace('/admin')
-                // setTimeout(() => {  
-                //         this.alertShow = false  
-                //         this.spinnerShow = false
-                // },3000) 
+                this.$router.replace('/admin/profile')
             })
             .catch((err) => {
                 this.alertType = "danger"
@@ -237,12 +219,6 @@ export default class login extends Vue {
                         this.alertTitle = "Email or password was incorrect";
                         break;
                 }
-                // setTimeout(() => {         
-                //         this.alertShow = false
-                //         this.spinnerShow = false
-                //         this.email = ''
-                //         this.password = ''
-                // },3000) 
             });
         }else{
             this.alertTitle = "Error !, Please input Required details"
