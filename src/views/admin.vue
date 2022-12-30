@@ -1,4 +1,5 @@
 <template>
+    <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="d-flex" id="app">
             <div class="text-bg-dark adminbar p-3" id="app" ref="jedi">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
@@ -86,6 +87,7 @@
 <script>
 import { Options, Vue } from 'vue-class-component';
 import sideBar from '@/components/UI/sideBar.vue'
+import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { onSnapshot, doc } from "firebase/firestore";
@@ -93,7 +95,8 @@ import { onSnapshot, doc } from "firebase/firestore";
 
 @Options({
   components: {
-    sideBar
+    sideBar,
+    toast
   },
 })
 export default class admin extends Vue {
@@ -103,6 +106,9 @@ export default class admin extends Vue {
     name = ""
     email = ""
     photoURL = ""
+    toastIcon = ''
+    toastTitle = ''
+    toastShow = false
 
     created(){
      onAuthStateChanged(this.auth, (user) => {
@@ -119,7 +125,6 @@ export default class admin extends Vue {
             }
         }
       });
-    //   this.$router.push('/admin/overview')
     }
 
     // $refs!: {
@@ -138,9 +143,12 @@ export default class admin extends Vue {
             this.$refs.jedi.style.position = "static";
         }
     }
-    logout(){
+    async logout(){
         const auth = getAuth();
-        signOut(auth).then(() => {
+        await signOut(auth).then(() => {
+            this.toastShow = true
+            this.toastIcon = 'success'
+            this.toastTitle = 'Logged out successfully'
             this.$router.replace('/')
         }).catch(() => {
             // An error happened.

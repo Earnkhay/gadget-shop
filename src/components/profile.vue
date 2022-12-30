@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="container p-5">
       <div class="row align-items-center">
         <div class="col">
@@ -48,6 +49,7 @@
 
 <script>
 import { Options, Vue } from 'vue-class-component';
+import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { onSnapshot, doc, updateDoc } from "firebase/firestore";
@@ -55,6 +57,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "fire
 
 @Options({
   components: {
+    toast
   },
 })
 export default class profile extends Vue {
@@ -66,6 +69,9 @@ export default class profile extends Vue {
   email = ""
   images = []
   number = null
+  toastIcon = ''
+  toastTitle = ''
+  toastShow = false
   formDisplay = false
   profileDisplay = true
   storage = getStorage();
@@ -101,7 +107,9 @@ export default class profile extends Vue {
     await uploadBytes(storageRef, file).then((snapshot) => {
         this.images.push(snapshot);
         // this.fileName = snapshot.metadata.name
-        console.log('Uploaded a blob or file!');
+        this.toastIcon = 'success'
+        this.toastTitle = 'Image uploaded successfully'
+        this.toastShow = true
       });
 
     // Get the download URL
@@ -111,18 +119,20 @@ export default class profile extends Vue {
         this.photoURL = url
       })
       .catch((error) => {
+        this.toastShow = true
+        this.toastIcon = 'error'
         switch (error.code) {
           case 'storage/object-not-found':
-            // File doesn't exist
+            this.toastTitle = 'object not found'
             break;
           case 'storage/unauthorized':
-            // User doesn't have permission to access the object
+            this.toastTitle = 'unauthorized'
             break;
           case 'storage/canceled':
-            // User canceled the upload
+            this.toastTitle = 'canceled'
             break;
           case 'storage/unknown':
-            // Unknown error occurred, inspect the server response
+            this.toastTitle = 'unknown'
             break;
         }
       });
@@ -134,38 +144,49 @@ export default class profile extends Vue {
 
     // Delete the file
     deleteObject(imageRef).then(() => {
+      this.toastShow = true
+      this.toastIcon = 'success'
+      this.toastTitle = 'Image deleted successfully'
       this.photoURL = "" 
       document.getElementById('imageInput').value = '';
-      console.log('deleted successfully');
     }).catch((error) => {
-      console.log(error);
+      this.toastShow = true
+      this.toastIcon = 'error'
+      this.toastTitle = error
     });
   }
 
   updatePass(){
     sendPasswordResetEmail(this.auth, this.email)
     .then(() => {
-      // Password reset email sent!
-      // ..
+      this.toastShow = true
+      this.toastIcon = 'success'
+      this.toastTitle = 'Password reset email sent!'
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      this.toastShow = true
+      this.toastIcon = 'error'
+      this.toastTitle = error.message
     });
   }
 
-  async updateProfile(){
-    await updateDoc(doc(db, `profiles/${this.id}`), {
+  updateProfile(){
+    updateDoc(doc(db, `profiles/${this.id}`), {
         name: this.name,
         address: this.address,
         number: this.number
-    });
+    })
+    this.toastShow = true
+    this.toastIcon = 'success'
+    this.toastTitle = 'Profile updated successfully'
   }
-  async savePicture(){
-    await updateDoc(doc(db, `profiles/${this.id}`), {
+  savePicture(){
+    updateDoc(doc(db, `profiles/${this.id}`), {
         photoURL: this.photoURL,
     });
+    this.toastIcon = 'success'
+    this.toastTitle = 'Avatar uploaded successfully'
+    this.toastShow = true
     document.getElementById('imageInput').value = '';
     this.photoURL = ""
   }

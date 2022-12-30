@@ -1,10 +1,11 @@
 <template>
   <div id="app">
+    <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="container p-5">
       <div class="row align-items-center">
         <div class="col">
           <h1>Products</h1>
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, inventore id. Tenetur, eligendi. Amet magnam ducimus accusantium dolor, vel eos.</p>
+          <p>Add new products here.</p>
         </div>
         <div class="col">
           <img src="../assets/undraw_shopping_app_flsj.png" alt="" class="img-fluid">
@@ -125,6 +126,7 @@
 
 <script>
 import { Options, Vue } from 'vue-class-component';
+import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -132,6 +134,7 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, orderBy, que
 
 @Options({
   components: {
+    toast
   },
 })
 export default class products extends Vue {
@@ -149,6 +152,9 @@ export default class products extends Vue {
   images = []
   storage = getStorage();
   currentProduct
+  toastIcon = ''
+  toastTitle = ''
+  toastShow = false
   auth = getAuth()
   user = this.auth.currentUser
   id = this.user.uid
@@ -185,6 +191,9 @@ export default class products extends Vue {
     await uploadBytes(storageRef, file).then((snapshot) => {
         this.images.push(snapshot);
         this.fileName = snapshot.metadata.name
+        this.toastIcon = 'success'
+        this.toastTitle = 'Uploaded image successfully'
+        this.toastShow = true
       });
 
     // Get the download URL
@@ -194,40 +203,47 @@ export default class products extends Vue {
         this.image = url
       })
       .catch((error) => {
+        this.toastShow = true
+        this.toastIcon = 'error'
         switch (error.code) {
           case 'storage/object-not-found':
-            // File doesn't exist
+            this.toastTitle = 'object not found'
             break;
           case 'storage/unauthorized':
-            // User doesn't have permission to access the object
+            this.toastTitle = 'unauthorized'
             break;
           case 'storage/canceled':
-            // User canceled the upload
+            this.toastTitle = 'canceled'
             break;
           case 'storage/unknown':
-            // Unknown error occurred, inspect the server response
+            this.toastTitle = 'unknown'
             break;
         }
       });
   }
 
   addProduct(){
-      if(this.name && this.price && this.desc && this.image) {
-          addDoc(this.productsCollectionRef, { 
-              name: this.name,
-              price: this.price,
-              desc: this.desc,
-              image: this.image,
-              imgName: this.fileName,
-              date: Date.now(),
-          })
+    if(this.name && this.price && this.desc && this.image) {
+      addDoc(this.productsCollectionRef, { 
+        name: this.name,
+        price: this.price,
+        desc: this.desc,
+        image: this.image,
+        imgName: this.fileName,
+        date: Date.now(),
+      })
+        this.toastIcon = 'success'
+        this.toastTitle = 'Product added successfully'
+        this.toastShow = true
         this.name = ""
         this.price = ""
         this.desc = ""
         this.image = ""
         document.getElementById('imageInput').value = '';
       }else{
-        alert('please input all required details')
+        this.toastIcon = 'error'
+        this.toastTitle = 'please input all required details'
+        this.toastShow = true
       }
   }
 
@@ -291,19 +307,23 @@ export default class products extends Vue {
       this.currentProduct = taskToUpdate
   }
 
-  async updateProduct(){
-      await updateDoc(doc(db, `products`, this.currentProduct.id), {
+  updateProduct(){
+    this.toastIcon = 'success'
+    this.toastTitle = 'Product updated successfully'
+    this.toastShow = true
+      updateDoc(doc(db, `products`, this.currentProduct.id), {
           name: this.editName,
           price: this.editPrice,
           desc: this.editDesc,
           image: this.image,
           imgName: this.fileName,
       });
-      // this.url = "" 
-      // document.getElementById('editImgInput').value = '';
   }
 
   deleteProduct(id){
+    this.toastIcon = 'success'
+    this.toastTitle = 'Product deleted successfully'
+    this.toastShow = true
     // Create a reference to the file to delete
     const storageRef = ref(this.storage)
 
@@ -315,9 +335,11 @@ export default class products extends Vue {
 
     //Delete the file
     deleteObject(spaceRef).then(() => {
-      console.log('deleted successfully');
-    }).catch(() => {
-      // console.log(error);
+      // console.log('deleted successfully');
+    }).catch((error) => {
+      this.toastIcon = 'error'
+      this.toastTitle = error
+      this.toastShow = true
     });
     deleteDoc(doc(db, `products`, id));
   }
@@ -342,8 +364,13 @@ export default class products extends Vue {
     deleteObject(imageRef).then(() => {
       this.image = "" 
       document.getElementById('imageInput').value = '';
-    }).catch(() => {
-      // console.log(error);
+      this.toastIcon = 'success'
+      this.toastTitle = 'Image deleted successfully'
+      this.toastShow = true
+    }).catch((error) => {
+      this.toastIcon = 'error'
+      this.toastTitle = error
+      this.toastShow = true
     });
   }
 }

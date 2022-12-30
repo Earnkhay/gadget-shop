@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <topnav/>
     <div class="container text-center mt-5 fw-bold p-5 lh-lg" style="padding-top: 120px !important;" v-if="!this.$store.state.cart.length">
       <i class="fa-solid fa-cart-shopping fs-1 bg-secondary rounded-circle p-4 mb-3"></i>
@@ -8,8 +9,11 @@
       <router-link class="btn btn-lg btn-primary" to="/products">Start Shopping</router-link>
     </div>
     <div style="padding-top: 120px !important;" v-else>
-      <div class="container mt-3 table-responsive">
-        <h1 class="text-center my-4">Cart</h1>
+      <div class="container table-responsive">
+        <h1 class="text-center my-3">Cart</h1>
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-primary" @click="clearCart">Clear cart</button>
+        </div>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -22,7 +26,7 @@
           </thead>
           <tbody>
             <tr v-for="(item, id) in this.$store.state.cart" :key="id">
-              <th scope="row" class="text-danger" style="cursor: pointer;" @click="$store.commit('removeFromCart', item)">X</th>
+              <th scope="row" class="text-danger" style="cursor: pointer;" @click="deleteProduct(item)">X</th>
               <td>
                 <div class="d-flex">
                   <img :src="item.img" alt="product image" class="me-3" width="55" height="40">
@@ -60,17 +64,35 @@ import { Options, Vue } from 'vue-class-component';
 import topnav from '@/components/UI/topnav.vue';
 import miniCart from '@/components/miniCart.vue'
 import myFooter from '@/components/UI/myFooter.vue'
+import toast from '@/components/UI/toast.vue'
+
 
 @Options({
   components: {
     topnav,
     miniCart,
-    myFooter
+    myFooter,
+    toast
   },
 })
 export default class cart extends Vue {
+  toastIcon = ''
+  toastTitle = ''
+  toastShow = false
   get cartTotal() {
       return this.$store.getters.cartTotal
+  }
+  clearCart(){
+    this.toastIcon = 'success'
+    this.toastTitle = 'Cart cleared successfully'
+    this.toastShow = true
+    this.$store.commit('clearCart');
+  }
+  deleteProduct(item){
+    this.toastIcon = 'success'
+    this.toastTitle = 'Product deleted successfully'
+    this.toastShow = true
+    this.$store.commit('removeFromCart', item)
   }
 }
 </script>
