@@ -8,7 +8,8 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import { initializeApp } from "firebase/app";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +26,7 @@ const app = createApp(App);
 // Initialize Firebase
 initializeApp(firebaseConfig);
 app.use(VueAxios, axios)
+app.use(VueSweetalert2);
 app.provide('axios', app.config.globalProperties.axios)
 
 app.use(store).use(router).mount('#app')

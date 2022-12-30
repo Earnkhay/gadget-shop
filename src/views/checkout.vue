@@ -200,7 +200,6 @@ export default class checkout extends Vue {
     
     placeOrder(){
         if (this.address != '' && this.state != '' && this.selectedCountry) {
-            console.log(this.address, this.state, this.selectedCountry);
             addDoc(this.ordersCollectionRef, { 
               address: this.address,
               state: this.state,
@@ -214,7 +213,6 @@ export default class checkout extends Vue {
             })
             this.$router.push('/admin/orders')
             this.$store.commit('clearCart');
-            console.log(this.cartTotal, this.cartQuantity, this.selectedOption);
         }else{
             alert('please input required details')
         }

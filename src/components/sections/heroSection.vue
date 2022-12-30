@@ -3,11 +3,11 @@
     <div class="row align-items-center">
       <div class="col-md-5 mb-3 hero-text">
         <h1>Gadget shop for Devs</h1>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio molestias, impedit aliquid est optio, 
-          non officiis quas quasi nobis blanditiis atque a, repellat et esse dolore cupiditate magnam numquam vitae?</p>
+        <p>Welcome to Gadget Shop, your one-stop destination for all the latest and greatest gadgets on the market! 
+          We've got everything you need to stay connected, productive, and entertained, no matter where you are.</p>
         <div class="d-flex flex-wrap flex-btn">
-          <button type="button" class="btn btn-lg btn-primary me-3 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Get started</button>
-          <router-link to="/products" class="btn btn-lg btn-outline-primary mb-2">Products</router-link>
+          <button type="button" v-if="isLoggedIn" class="btn btn-lg btn-primary me-3 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Get started</button>
+          <router-link to="/products" class="btn btn-lg btn-outline-primary mb-2">{{ isLoggedIn == true ? "Products" : "Browse Products" }}</router-link>
         </div>
       </div>
       <div class="col-md-7">
@@ -16,6 +16,24 @@
     </div>
   </div>
 </template>
+
+<script>
+import { Vue } from 'vue-class-component';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+export default class heroSection extends Vue {
+  auth = getAuth()
+  isLoggedIn = true
+  created(){
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+      }
+    })
+  }
+}
+</script>
 
 <style scoped>
 @media screen and (max-width: 767px) {

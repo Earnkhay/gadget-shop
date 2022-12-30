@@ -38,7 +38,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><router-link class="dropdown-item" to="/admin/overview">My Account</router-link></li>
-              <li><a class="dropdown-item" href="#">Orders</a></li>
+              <li><router-link class="dropdown-item" to="/admin/orders">Orders</router-link></li>
               <li><hr class="dropdown-divider"></li>
               <div class="text-center">
                 <li><a class="dropdown-item link-dark fw-bold" href="#" @click="logOutAction">Logout</a></li>
