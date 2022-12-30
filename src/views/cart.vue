@@ -10,8 +10,8 @@
     </div>
     <div style="padding-top: 120px !important;" v-else>
       <div class="container table-responsive">
-        <h1 class="text-center my-3">Cart</h1>
-        <div class="d-flex justify-content-end mb-3">
+        <div class="d-flex justify-content-between my-4 align-items-center">
+          <h3 class="text-center">Cart</h3>
           <button class="btn btn-primary" @click="clearCart">Clear cart</button>
         </div>
         <table class="table table-bordered">
@@ -51,7 +51,7 @@
         </table>
       </div>
       <div class="container d-flex justify-content-end">
-        <router-link to="/checkout" class="btn btn-primary">Checkout</router-link>
+        <button class="btn btn-primary" @click="isLoggedIn">Checkout</button>
       </div>
     </div>
     <my-footer/>
@@ -65,7 +65,7 @@ import topnav from '@/components/UI/topnav.vue';
 import miniCart from '@/components/miniCart.vue'
 import myFooter from '@/components/UI/myFooter.vue'
 import toast from '@/components/UI/toast.vue'
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 @Options({
   components: {
@@ -76,6 +76,7 @@ import toast from '@/components/UI/toast.vue'
   },
 })
 export default class cart extends Vue {
+  auth = getAuth()
   toastIcon = ''
   toastTitle = ''
   toastShow = false
@@ -93,6 +94,17 @@ export default class cart extends Vue {
     this.toastTitle = 'Product deleted successfully'
     this.toastShow = true
     this.$store.commit('removeFromCart', item)
+  }
+  isLoggedIn(){
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.$router.push('/checkout')
+      } else {
+        this.toastIcon = 'error'
+        this.toastTitle = 'Please log in to checkout'
+        this.toastShow = true
+      }
+    })
   }
 }
 </script>

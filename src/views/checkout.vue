@@ -1,5 +1,6 @@
 <template>
     <topnav/>
+    <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="container p-3">
       <div class="row g-3" style="padding-top: 120px !important;">
         <h1 class="text-center">Checkout</h1>
@@ -138,10 +139,13 @@ import { db } from "@/firebase"
 import axios from 'axios'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { onSnapshot, doc, addDoc, collection, query, orderBy } from "firebase/firestore";
+import toast from '@/components/UI/toast.vue'
+
 @Options({
     components: {
         topnav,
-        myFooter
+        myFooter,
+        toast
     },
 })
 export default class checkout extends Vue {
@@ -150,6 +154,9 @@ export default class checkout extends Vue {
     id = this.user.uid
     selectedOption = ''
     // date = ""
+    toastIcon = ''
+    toastTitle = ''
+    toastShow = false
     selectedCountry = ''
     sameAddress = false
     name = ""
@@ -211,10 +218,15 @@ export default class checkout extends Vue {
               status: this.status,
               date: Date.now(),
             })
+            this.toastIcon = 'success'
+            this.toastTitle = 'Order placed successfully'
+            this.toastShow = true
             this.$router.push('/admin/orders')
             this.$store.commit('clearCart');
         }else{
-            alert('please input required details')
+            this.toastIcon = 'error'
+            this.toastTitle = 'please input required details'
+            this.toastShow = true
         }
     }
 }

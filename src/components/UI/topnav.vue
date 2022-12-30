@@ -1,4 +1,5 @@
 <template>
+  <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
   <nav class="navbar navbar-expand-lg fixed-top border-bottom shadow py-4" style="background-color: rgb(248, 243, 244);">
     <div class="container">
       <router-link class="navbar-brand" to="/"><h2> Gadget Shop</h2></router-link>
@@ -52,6 +53,7 @@
       </div>
     </div>
   </nav>
+  <login/>
 </template>
 
 <script>
@@ -59,9 +61,13 @@ import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase"
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { onSnapshot, doc } from "firebase/firestore";
+import toast from '@/components/UI/toast.vue'
+import login from '@/components/login.vue'
 
 @Options({
     components: {
+      toast,
+      login
     },
   })
 
@@ -69,6 +75,9 @@ export default class topnav extends Vue {
   auth = getAuth()
   isLoggedIn = false
   name = ""
+  toastIcon = ''
+  toastTitle = ''
+  toastShow = false
   created(){
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -92,6 +101,9 @@ export default class topnav extends Vue {
 
   logOutAction(){
     signOut(this.auth).then(() => {
+      this.toastShow = true
+      this.toastIcon = 'success'
+      this.toastTitle = 'Logged out successfully'
       this.$router.push("/")
     })
     .catch(() => {
