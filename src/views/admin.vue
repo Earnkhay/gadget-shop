@@ -26,12 +26,12 @@
                             Overview
                         </router-link>
                     </li>
-                    <li class="nav-item mb-1">
+                    <!-- <li class="nav-item mb-1">
                         <router-link to="/admin/products" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-shop p-1"></i> 
                                 Products
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class="nav-item mb-1">
                         <router-link to="/admin/orders" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-cart-shopping p-1"></i>
@@ -149,7 +149,7 @@ export default class admin extends Vue {
             this.toastShow = true
             this.toastIcon = 'success'
             this.toastTitle = 'Logged out successfully'
-            this.$router.replace('/')
+            // this.$router.replace('/')
         }).catch(() => {
             // An error happened.
         });
