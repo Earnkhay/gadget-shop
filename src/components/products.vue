@@ -38,6 +38,14 @@
               <label for="exampleFormControlInput1" class="form-label">Product price</label>
               <input type="number" class="form-control" v-model="price" id="exampleFormControlInput1" placeholder="Input Product price">
             </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" v-model="category" required>
+                    <option value="">Select a category</option>
+                    <option >Laptop</option>
+                    <option >Phone</option>
+                </select>
+            </div>
             <div class="mb-3 img-wrapp">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
               <input type="file" class="form-control mb-2" id="imageInput" @change="uploadImages">
@@ -99,6 +107,14 @@
                 <label for="exampleFormControlInput1" class="form-label">Product price</label>
                 <input type="number" class="form-control" v-model="editPrice" id="exampleFormControlInput1">
               </div>
+              <div class="mb-3">
+                <label for="editCategory" class="form-label">Category</label>
+                <select class="form-select" v-model="editCategory" required>
+                    <option value=""></option>
+                    <option >Laptop</option>
+                    <option >Phone</option>
+                </select>
+              </div>
               <!-- <div class="mb-3 img-wrapp">
                 <label for="exampleFormControlInput1" class="form-label">Product Image</label>
                 <input type="file" class="form-control mb-2" id="editImgInput" @change="editImage">
@@ -149,12 +165,14 @@ export default class products extends Vue {
   editName = ""
   editPrice = null
   editDesc = ""
+  editCategory = ""
   images = []
   storage = getStorage();
   currentProduct
   toastIcon = ''
   toastTitle = ''
   toastShow = false
+  category = ""
   auth = getAuth()
   user = this.auth.currentUser
   id = this.user.uid
@@ -172,6 +190,7 @@ export default class products extends Vue {
                     name: doc.data().name,
                     price: doc.data().price,
                     desc: doc.data().desc,
+                    category: doc.data().category,
                     image: doc.data().image,
                     imgName: doc.data().imgName,
                 }
@@ -230,6 +249,7 @@ export default class products extends Vue {
         desc: this.desc,
         image: this.image,
         imgName: this.fileName,
+        category: this.category,
         date: Date.now(),
       })
         this.toastIcon = 'success'
@@ -239,6 +259,7 @@ export default class products extends Vue {
         this.price = ""
         this.desc = ""
         this.image = ""
+        this.category = ''
         document.getElementById('imageInput').value = '';
       }else{
         this.toastIcon = 'error'
@@ -303,7 +324,7 @@ export default class products extends Vue {
       this.editPrice = taskToUpdate.price,
       this.editDesc = taskToUpdate.desc,
       this.image = taskToUpdate.image,
-      // this.fileName = taskToUpdate.imgName,
+      this.editCategory = taskToUpdate.category
       this.currentProduct = taskToUpdate
   }
 
@@ -315,8 +336,9 @@ export default class products extends Vue {
           name: this.editName,
           price: this.editPrice,
           desc: this.editDesc,
-          image: this.image,
-          imgName: this.fileName,
+          // image: this.image,
+          // imgName: this.fileName,
+          category: this.editCategory
       });
   }
 

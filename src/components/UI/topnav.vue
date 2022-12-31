@@ -113,3 +113,8 @@ export default class topnav extends Vue {
 }
 </script>
 
+<style scoped>
+li a:hover{
+  color: blue !important;
+}
+</style>
