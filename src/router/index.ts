@@ -6,6 +6,7 @@ import products from '@/components/products.vue'
 import profile from '@/components/profile.vue'
 import orders from '@/components/orders.vue'
 import cart from '@/views/cart.vue'
+import notFoundPage from '@/views/notFoundPage.vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const routes: Array<RouteRecordRaw> = [
@@ -66,6 +67,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requiresAuth: true
     },
+  },
+  {
+    path: "/404",
+    name: "notFound",
+    component: notFoundPage
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "404"
   },
 ]
 
