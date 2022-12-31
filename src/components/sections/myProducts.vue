@@ -1,26 +1,6 @@
 <template>
   <div class="bg-light p-5">
     <h1 class="text-center mb-4">Our Products</h1>
-    <!-- <h2 class="my-3 text-center p-3">Phones</h2> -->
-    <!-- <carousel :breakpoints="breakpoints">
-        <slide v-for="(item, id) in items" :key="id">
-          <div class="card" style="width: 18rem; height: 100%;">
-            <img :src="item.thumbnail" width="100" height="190" @click="itemDetail(item)" class="card-img-top" alt="Product image">
-            <div class="card-body text-start">
-              <div @click="itemDetail(item)" class="mb-3">
-                <h5 class="card-title">{{item.title}}</h5>
-                <p class="card-text">${{item.price}}</p>
-              </div>
-              <add-to-cart :itemId="item.id" :price="item.price" :title="item.title" :img="item.thumbnail"/>
-            </div>
-          </div>
-        </slide>
-        <template #addons>
-          <navigation class="text-light bg-dark rounded-4"/>
-          <pagination />
-        </template>
-    </carousel> -->
-    <h2 class="my-3 text-center p-3">Laptops</h2>
     <carousel :breakpoints="breakpoints" :autoplay="2000" :wrap-around="true">
         <slide v-for="(product, id) in products" :key="id">
           <div class="card" style="width: 18rem; height: 100%;">
@@ -49,8 +29,8 @@ import { Options, Vue } from 'vue-class-component';
 import addToCart from '@/components/addToCart.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { db } from "@/firebase"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { getAuth, } from "firebase/auth"
+import { collection, onSnapshot, query } from "firebase/firestore";
 
 @Options({
   components: { 
@@ -66,7 +46,7 @@ export default class myProducts extends Vue {
     products = []
     auth = getAuth()
     productsCollectionRef = collection(db, `products`)
-    productsCollectionQuery = query(this.productsCollectionRef, orderBy('date', 'desc'));
+    productsCollectionQuery = query(this.productsCollectionRef);
 
     breakpoints = {
     200: {
@@ -90,20 +70,20 @@ export default class myProducts extends Vue {
     //   .catch(err => console.error(err));
 
     onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-          const fbProducts = []
-          querySnapshot.forEach((doc) => {
-              const product = {
-                  id: doc.id,
-                  name: doc.data().name,
-                  price: doc.data().price,
-                  desc: doc.data().desc,
-                  image: doc.data().image,
-                  imgName: doc.data().imgName,
-              }
-              fbProducts.push(product)
-          })
-              this.products = fbProducts
-          })
+      const fbProducts = []
+      querySnapshot.forEach((doc) => {
+          const product = {
+              id: doc.id,
+              name: doc.data().name,
+              price: doc.data().price,
+              desc: doc.data().desc,
+              image: doc.data().image,
+              imgName: doc.data().imgName,
+          }
+          fbProducts.push(product)
+      })
+          this.products = fbProducts
+    })
   }
 
   itemDetail(product){

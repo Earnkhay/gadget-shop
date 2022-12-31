@@ -9,11 +9,11 @@
       <router-link class="btn btn-lg btn-primary" to="/products">Start Shopping</router-link>
     </div>
     <div style="padding-top: 120px !important;" v-else>
+      <div class="container d-flex justify-content-between my-4 align-items-center">
+        <h3 class="text-center">Cart</h3>
+        <button class="btn btn-primary" @click="clearCart">Clear cart</button>
+      </div>
       <div class="container table-responsive">
-        <div class="d-flex justify-content-between my-4 align-items-center">
-          <h3 class="text-center">Cart</h3>
-          <button class="btn btn-primary" @click="clearCart">Clear cart</button>
-        </div>
         <table class="table table-bordered">
           <thead>
             <tr>
