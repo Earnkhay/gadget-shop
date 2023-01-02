@@ -3,7 +3,6 @@
     <div class="d-flex" id="app">
             <div class="text-bg-dark adminbar p-3" id="app" ref="jedi">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
-                    <!-- <h5>Gadget shop</h5> -->
                     <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
                     <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
                 </div>
@@ -131,7 +130,7 @@ export default class admin extends Vue {
     //     jedi: HTMLDivElement;
     //     menubar: HTMLDivElement;
     // };
-    
+
     toggleSideBar(){
         if (this.$refs.jedi.style.display == "none") {
             this.$refs.jedi.style.display = "block"; 

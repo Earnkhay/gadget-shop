@@ -83,6 +83,21 @@ export default class cart extends Vue {
   get cartTotal() {
       return this.$store.getters.cartTotal
   }
+  // get shouldShowToast(){
+  //   return this.toastShow
+  // }
+  displayToast() {
+      this.$swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      }).fire({
+        icon: 'success',
+        title: 'Product deleted successfully',
+      })
+  }
   clearCart(){
     this.toastIcon = 'success'
     this.toastTitle = 'Cart cleared successfully'
@@ -90,9 +105,10 @@ export default class cart extends Vue {
     this.$store.commit('clearCart');
   }
   deleteProduct(item){
-    this.toastIcon = 'success'
-    this.toastTitle = 'Product deleted successfully'
-    this.toastShow = true
+    // this.toastIcon = 'success'
+    // this.toastTitle = 'Product deleted successfully'
+    // this.toastShow = true
+    this.displayToast()
     this.$store.commit('removeFromCart', item)
   }
   isLoggedIn(){

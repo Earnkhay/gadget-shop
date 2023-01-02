@@ -12,7 +12,6 @@
               <div class="form">
                   <div class="text-center">
                       <alert v-if="alertShow" :alertText="alertTitle" :alertType="alertType"></alert>
-                      
                   </div>
                   <div class="row justify-content-center mt-2">
                           <form action="" id="login-form" class="col-md-10 text-xs-center">   
@@ -62,7 +61,7 @@ import { doc, setDoc } from "firebase/firestore";
 @Options({
 components: {
     alert, 
-    toast
+    toast,
 },
 })
 export default class login extends Vue {

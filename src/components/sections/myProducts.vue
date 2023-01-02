@@ -1,6 +1,9 @@
 <template>
   <div class="bg-light p-5">
     <h1 class="text-center mb-4">Our Products</h1>
+    <div v-if="spinnerShow">
+      <spinner/>
+    </div>
     <carousel :breakpoints="breakpoints" :autoplay="2000" :wrap-around="true">
         <slide v-for="(product, id) in products" :key="id">
           <div class="card" style="width: 18rem; height: 100%;">
@@ -25,8 +28,8 @@
 <script>
 import 'vue3-carousel/dist/carousel.css'
 import { Options, Vue } from 'vue-class-component';
-// import axios from 'axios'
 import addToCart from '@/components/addToCart.vue'
+import spinner from '@/components/UI/spinner.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { db } from "@/firebase"
 import { getAuth, } from "firebase/auth"
@@ -39,16 +42,17 @@ import { collection, onSnapshot, query } from "firebase/firestore";
       Pagination,
       Navigation, 
       addToCart,
+      spinner
   },
   })
 export default class myProducts extends Vue {
-    // items = []
     products = []
     auth = getAuth()
+    spinnerShow = false
     productsCollectionRef = collection(db, `products`)
     productsCollectionQuery = query(this.productsCollectionRef);
 
-    breakpoints = {
+  breakpoints = {
     200: {
       itemsToShow: 1,
     },
@@ -61,14 +65,7 @@ export default class myProducts extends Vue {
   }
 
   mounted(){
-    // axios.get('https://dummyjson.com/products/category/smartphones', {
-    //     // timeout: 5000
-    // })
-    //   .then((res) => {
-    //     this.items = res.data.products
-    //   })
-    //   .catch(err => console.error(err));
-
+    this.spinnerShow = true
     onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
       const fbProducts = []
       querySnapshot.forEach((doc) => {
@@ -83,6 +80,7 @@ export default class myProducts extends Vue {
           fbProducts.push(product)
       })
           this.products = fbProducts
+          this.spinnerShow = false
     })
   }
 

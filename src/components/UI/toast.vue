@@ -1,6 +1,5 @@
 <template>
   <div>
-
   </div>
 </template>
 
@@ -10,7 +9,8 @@ import {Options, Vue} from "vue-class-component"
 @Options({
     props: {
       icon: String,
-      title: String
+      title: String,
+      // showToast: Boolean
     }
 })
 
@@ -18,7 +18,7 @@ export default class toast extends Vue {
   // $swal: any;
   // icon: any;
   // title: any;
-  showToast() {
+  displayToast() {
     this.$swal.mixin({
       toast: true,
       position: 'top-end',
@@ -27,11 +27,16 @@ export default class toast extends Vue {
       timerProgressBar: true,
     }).fire({
       icon: this.icon,
-      title: this.title
+      title: this.title,
     })
   }    
-  created(){
-    this.showToast()
+  mounted(){
+    // this.showToast()
+    this.displayToast()
+    // if (this.showToast) {
+    //   this.displayToast();
+    //   console.log(this.showToast, 'toast comp', this.displayToast());
+    // }
   }
 }
 </script>
