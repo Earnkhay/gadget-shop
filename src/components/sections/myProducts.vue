@@ -33,7 +33,7 @@ import spinner from '@/components/UI/spinner.vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { db } from "@/firebase"
 import { getAuth, } from "firebase/auth"
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, limit } from "firebase/firestore";
 
 @Options({
   components: { 
@@ -50,7 +50,7 @@ export default class myProducts extends Vue {
     auth = getAuth()
     spinnerShow = false
     productsCollectionRef = collection(db, `products`)
-    productsCollectionQuery = query(this.productsCollectionRef);
+    productsCollectionQuery = query(this.productsCollectionRef, limit(10));
 
   breakpoints = {
     200: {
