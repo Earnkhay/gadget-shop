@@ -13,6 +13,13 @@
       </div>
     </div>
 
+    <!-- <input list="items">
+    <datalist id="items">
+      <option value="nk"></option>
+      <option value="nkechi"></option>
+      <option value="julia"></option>
+      <option value="nkechi onyimadu"></option>
+    </datalist> -->
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-between container px-5 py-2 mb-3 border-bottom">
       <h2>Products List</h2>
@@ -48,7 +55,7 @@
             </div>
             <div class="mb-3 img-wrapp">
               <label for="exampleFormControlInput1" class="form-label">Product Image</label>
-              <input type="file" class="form-control mb-2" id="imageInput" @change="uploadImages">
+              <input type="file" class="form-control mb-2" id="imageInput" @change="uploadImages" accept=".png, .jpg, .jfif">
                 <img :src="image" style="width: 5rem; height: 30%;" alt="preview image"><span class="p-1 delete-img" style="cursor: pointer;" @click="deleteImage()">X</span>
             </div>
             <div class="mb-3">
