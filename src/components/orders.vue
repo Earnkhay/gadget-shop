@@ -39,20 +39,16 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Vue } from 'vue-class-component';
 import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 
-@Options({
-  components: {
-  },
-})
 export default class overview extends Vue {
   auth = getAuth()
   user = this.auth.currentUser
   // ? means a property is optional. a property can either have a value based on the type defined or its value can be undefined 
-  id = this.user?.uid
+  id = this.user!.uid
   orders: any = []
   ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
   ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));

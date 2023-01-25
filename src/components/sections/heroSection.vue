@@ -17,9 +17,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue } from 'vue-class-component';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 export default class heroSection extends Vue {
   auth = getAuth()
   isLoggedIn = true

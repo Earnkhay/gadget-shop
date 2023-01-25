@@ -34,14 +34,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Vue } from 'vue-class-component';
 
-@Options({
-    components: {
-    },
-})
 export default class miniCart extends Vue {
-$store: any;
+    $store: any;
     checkout(){
         this.$router.push('/cart')
     }

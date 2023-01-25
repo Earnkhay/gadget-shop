@@ -3,7 +3,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {Options, Vue} from "vue-class-component"
 
 @Options({
@@ -15,9 +15,9 @@ import {Options, Vue} from "vue-class-component"
 })
 
 export default class toast extends Vue {
-  // $swal: any;
-  // icon: any;
-  // title: any;
+  $swal: any
+  icon: any
+  title: any
   displayToast() {
     this.$swal.mixin({
       toast: true,

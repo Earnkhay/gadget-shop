@@ -232,7 +232,3 @@ export default class checkout extends Vue {
     }
 }
 </script>
-
-<style>
-
-</style>

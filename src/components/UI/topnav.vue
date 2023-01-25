@@ -56,7 +56,7 @@
   <login/>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase"
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
@@ -78,6 +78,7 @@ export default class topnav extends Vue {
   toastIcon = ''
   toastTitle = ''
   toastShow = false
+  $store: any;
   created(){
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -86,7 +87,8 @@ export default class topnav extends Vue {
           this.name = user.displayName
         }else{
           onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
-              this.name = doc.data().name
+            //The definite assignment assertion is a feature that allows a ! to be placed after instance property and variable declarations to relay to TypeScript that a variable is indeed assigned for all intents and purposes
+              this.name = doc.data()!.name
           })
         }
       } else {
