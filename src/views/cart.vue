@@ -104,9 +104,6 @@ export default class cart extends Vue {
     this.$store.commit('clearCart');
   }
   deleteProduct(item: any){
-    // this.toastIcon = 'success'
-    // this.toastTitle = 'Product deleted successfully'
-    // this.toastShow = true
     this.displayToast()
     this.$store.commit('removeFromCart', item)
   }
@@ -123,9 +120,3 @@ export default class cart extends Vue {
   }
 }
 </script>
-
-<style scoped>
-    /* #app{
-        min-height: 100vh;
-    } */
-</style>

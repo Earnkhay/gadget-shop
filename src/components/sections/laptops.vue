@@ -41,7 +41,7 @@ export default class laptops extends Vue {
 created(){
     this.spinnerShow = true
     onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-    const fbProducts: { id: string; name: any; price: any; desc: any; image: any; imgName: any; }[] = []
+    const fbProducts: { id: string; name: string; price: number; desc: string; image: string; imgName: string; }[] = []
     querySnapshot.forEach((doc) => {
         const product = {
             id: doc.id,

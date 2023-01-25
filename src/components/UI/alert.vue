@@ -5,35 +5,24 @@
 </template>
 
 <script lang="ts">
-    import {Options, Vue} from "vue-class-component"
-    @Options({
-        props: {
-            alertText: String,
-            alertType: String
-        }
-    })
-
-    export default class alert extends Vue {
-//         alertType!: string;
-//   alertText!: string;
-//   data() {
-//     return {
-//       alertType: 'Success',
-//       alertText: '',
-//     };
-//   }
-        // alertType = "";
-        // alertText = "";
-
-        // alertType = '';
-        // alertText = '';
+import {Options, Vue} from "vue-class-component"
+@Options({
+    props: {
+        alertText: String,
+        alertType: String
     }
+})
+
+export default class alert extends Vue {
+    alertType: string | undefined;
+    alertText: string | undefined;
+}
 </script>
 
 <style scoped>
-    .alertComp{
-        padding: 5px;
-        border-radius: 10px;
-        color: white;
-    }
+.alertComp{
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
 </style>

@@ -190,7 +190,7 @@ export default class products extends Vue {
     onAuthStateChanged(this.auth, (user) => {
         if (user) {
             onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-            const fbProducts: { id: string; name: any; price: any; desc: any; category: any; image: any; imgName: any; }[] = []
+            const fbProducts: { id: string; name: string; price: number; desc: string; category: string; image: string; imgName: string; }[] = []
             querySnapshot.forEach((doc) => {
                 const product = {
                     id: doc.id,

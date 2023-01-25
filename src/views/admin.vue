@@ -84,7 +84,6 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import sideBar from '@/components/UI/sideBar.vue'
 import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
@@ -93,7 +92,6 @@ import { onSnapshot, doc } from "firebase/firestore";
 
 @Options({
   components: {
-    sideBar,
     toast
   },
 })
@@ -117,7 +115,7 @@ export default class admin extends Vue {
         }
     }
     created(){
-        window.addEventListener('resize', this.handleResize);
+     window.addEventListener('resize', this.handleResize);
      onAuthStateChanged(this.auth, (user) => {
         if (user) {
             this.email = user.email || '';
@@ -136,8 +134,6 @@ export default class admin extends Vue {
     toggleSideBar() {
         this.sidebarVisible = !this.sidebarVisible;
     }
-
-    
     // toggleSideBar(){
     //     if (this.$refs.jedi.style.display == "none") {
     //         this.$refs.jedi.style.display = "block"; 
