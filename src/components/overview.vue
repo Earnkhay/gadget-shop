@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -65,7 +65,7 @@ export default class overview extends Vue {
   auth = getAuth()
   user = this.auth.currentUser
   id = this.user?.uid
-  orders = []
+  orders: any = []
   ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
   ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
 
@@ -73,7 +73,7 @@ export default class overview extends Vue {
     onAuthStateChanged(this.auth, (user) => {
     if (user) {
       onSnapshot(this.ordersCollectionQuery, (querySnapshot) => {
-      const fborders = []
+      const fborders: { id: string; cart: any; status: string; date: number; }[] = []
       querySnapshot.forEach((doc) => {
           const order = {
             id: doc.id,

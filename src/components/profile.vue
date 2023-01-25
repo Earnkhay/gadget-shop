@@ -16,8 +16,8 @@
     <div class="container p-4">
       <div class="container">
         <div class="mb-3">
-          <button type="button" class="btn me-2" :class="[profileDisplay == false ? 'btn-transparent' : 'btn-primary']" @click="profileDisplay = true, formDisplay = false">Profile</button>
-          <button type="button" class="btn btn-transparent" :class="[formDisplay == true ? 'btn-primary' : '']" @click="formDisplay = true, profileDisplay = false">Account settings</button>
+          <button type="button" class="btn me-2" :class=" [profileDisplay == false ? 'btn-transparent' : 'btn-primary']" @click="profileDisplay = true, formDisplay = false">Profile</button>
+          <button type="button" class="btn btn-transparent" :class="[formDisplay == true ? 'btn-primary' : '']" @click="formDisplay = true, profileDisplay = false"> Account settings</button>
         </div>
         
         <form action="" v-if="profileDisplay">
@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
@@ -63,10 +63,10 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "fire
 export default class profile extends Vue {
   auth = getAuth();
   user = this.auth.currentUser
-  id = this.user.uid
+  id = this.user?.uid
   name = ""
   address = ""
-  email = ""
+  email: any = ""
   images = []
   number = null
   toastIcon = ''
@@ -75,16 +75,16 @@ export default class profile extends Vue {
   formDisplay = false
   profileDisplay = true
   storage = getStorage();
-  photoURL = ""
+  photoURL: any = "" 
 
   created(){
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         onSnapshot(doc(db, `profiles/${this.id}`), (doc) => {
             // console.log("Current data: ", doc.data());
-            this.name = doc.data().name
-            this.address = doc.data().address
-            this.number = doc.data().number
+            this.name = doc.data()?.name
+            this.address = doc.data()?.address
+            this.number = doc.data()?.number
         });
         this.email = user.email;
         this.photoURL = user.photoURL;
@@ -92,7 +92,7 @@ export default class profile extends Vue {
               this.name = user.displayName
           }else {
               onSnapshot(doc(db, "profiles", user.uid), (doc) => {
-                  this.name = doc.data().name
+                  this.name = doc.data()?.name
               })
           }
       }
@@ -100,12 +100,13 @@ export default class profile extends Vue {
   }
 
   async uploadImage() {
-    const file = document.getElementById('imageInput').files[0];
+    // const file = (<HTMLInputElement | null>document.getElementById('imageInput')).files[0];
+    const file = (document.getElementById('imageInput') as HTMLInputElement | any).files[0];
     const storageRef = ref(this.storage, 'avatar/' + file.name);
 
     // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, file).then((snapshot) => {
-        this.images.push(snapshot);
+        // this.images.push(snapshot);
         // this.fileName = snapshot.metadata.name
         this.toastIcon = 'success'
         this.toastTitle = 'Image uploaded successfully'
@@ -144,11 +145,11 @@ export default class profile extends Vue {
 
     // Delete the file
     deleteObject(imageRef).then(() => {
+      (document.getElementById('imageInput')as HTMLInputElement).value = '';
       this.toastShow = true
       this.toastIcon = 'success'
       this.toastTitle = 'Image deleted successfully'
       this.photoURL = "" 
-      document.getElementById('imageInput').value = '';
     }).catch((error) => {
       this.toastShow = true
       this.toastIcon = 'error'
@@ -184,10 +185,10 @@ export default class profile extends Vue {
     updateDoc(doc(db, `profiles/${this.id}`), {
         photoURL: this.photoURL,
     });
+    (document.getElementById('imageInput') as HTMLInputElement).value = '';
     this.toastIcon = 'success'
     this.toastTitle = 'Avatar uploaded successfully'
     this.toastShow = true
-    document.getElementById('imageInput').value = '';
     this.photoURL = ""
   }
 }

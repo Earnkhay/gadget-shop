@@ -9,7 +9,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="container-fluid d-flex" v-for="(item, id) in this.$store.state.cart" :key="id">
+            <div class="container-fluid d-flex" v-for="(item, id) in $store.state.cart" :key="id">
                 <div class="me-3">
                     <img :src="item.img" alt="product image" class="img-fluid" width="55" height="55"> 
                 </div>
@@ -33,7 +33,7 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
@@ -41,6 +41,7 @@ import { Options, Vue } from 'vue-class-component';
     },
 })
 export default class miniCart extends Vue {
+$store: any;
     checkout(){
         this.$router.push('/cart')
     }

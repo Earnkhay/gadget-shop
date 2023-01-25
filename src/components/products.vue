@@ -147,7 +147,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import toast from '@/components/UI/toast.vue'
 import { db } from "@/firebase"
@@ -161,7 +161,7 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, orderBy, que
   },
 })
 export default class products extends Vue {
-  products = []
+  products:any = []
   image = ""
   url = ""
   name = ""
@@ -175,14 +175,14 @@ export default class products extends Vue {
   editCategory = ""
   images = []
   storage = getStorage();
-  currentProduct
+  currentProduct: any
   toastIcon = ''
   toastTitle = ''
   toastShow = false
   category = ""
   auth = getAuth()
   user = this.auth.currentUser
-  id = this.user.uid
+  id = this.user?.uid
   productsCollectionRef = collection(db, `products`)
   productsCollectionQuery = query(this.productsCollectionRef, orderBy('date', 'desc'));
 
@@ -190,7 +190,7 @@ export default class products extends Vue {
     onAuthStateChanged(this.auth, (user) => {
         if (user) {
             onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-            const fbProducts = []
+            const fbProducts: { id: string; name: any; price: any; desc: any; category: any; image: any; imgName: any; }[] = []
             querySnapshot.forEach((doc) => {
                 const product = {
                     id: doc.id,
@@ -210,12 +210,12 @@ export default class products extends Vue {
   }
 
   async uploadImages() {
-    const file = document.getElementById('imageInput').files[0];
+    const file = (document.getElementById('imageInput') as HTMLInputElement | any).files[0];
     const storageRef = ref(this.storage, 'products/' + file.name);
 
     // 'file' comes from the Blob or File API
     await uploadBytes(storageRef, file).then((snapshot) => {
-        this.images.push(snapshot);
+        // this.images.push(snapshot);
         this.fileName = snapshot.metadata.name
         this.toastIcon = 'success'
         this.toastTitle = 'Uploaded image successfully'
@@ -259,15 +259,16 @@ export default class products extends Vue {
         category: this.category,
         date: Date.now(),
       })
+       const img = (document.getElementById('imageInput') as HTMLInputElement).value = '';
         this.toastIcon = 'success'
         this.toastTitle = 'Product added successfully'
         this.toastShow = true
         this.name = ""
-        this.price = ""
+        this.price = null
         this.desc = ""
         this.image = ""
         this.category = ''
-        document.getElementById('imageInput').value = '';
+        img
       }else{
         this.toastIcon = 'error'
         this.toastTitle = 'please input all required details'
@@ -325,8 +326,8 @@ export default class products extends Vue {
     //   });
     // }
 
-  editProduct(id){
-      const taskToUpdate = this.products.find((product) => product.id === id)
+  editProduct(id: any){
+      const taskToUpdate = this.products.find((product: { id: any; }) => product.id === id)
       this.editName = taskToUpdate.name,
       this.editPrice = taskToUpdate.price,
       this.editDesc = taskToUpdate.desc,
@@ -349,7 +350,7 @@ export default class products extends Vue {
       });
   }
 
-  deleteProduct(id){
+  deleteProduct(id: string){
     this.toastIcon = 'success'
     this.toastTitle = 'Product deleted successfully'
     this.toastShow = true
@@ -358,7 +359,7 @@ export default class products extends Vue {
 
     const imagesRef = ref(storageRef, 'products');
 
-    const itemToBedeleted = this.products.find((data) => data.id == id);
+    const itemToBedeleted = this.products.find((data: { id: string; }) => data.id == id);
 
     const spaceRef = ref(imagesRef, `${itemToBedeleted.imgName}`);
 
@@ -391,8 +392,8 @@ export default class products extends Vue {
 
     // Delete the file
     deleteObject(imageRef).then(() => {
+      (document.getElementById('imageInput') as HTMLInputElement).value = '';
       this.image = "" 
-      document.getElementById('imageInput').value = '';
       this.toastIcon = 'success'
       this.toastTitle = 'Image deleted successfully'
       this.toastShow = true

@@ -16,7 +16,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import addToCart from '@/components/addToCart.vue'
 import spinner from '@/components/UI/spinner.vue'
@@ -31,16 +31,17 @@ components: {
 },
 })
 export default class laptops extends Vue {
-    products = []
+    products: any = []
     auth = getAuth()
     spinnerShow = false
     productsCollectionRef = collection(db, `products`)
     productsCollectionQuery = query(this.productsCollectionRef, where('category', '==', 'Laptop'));
+    $store: any;
 
 created(){
     this.spinnerShow = true
     onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-    const fbProducts = []
+    const fbProducts: { id: string; name: any; price: any; desc: any; image: any; imgName: any; }[] = []
     querySnapshot.forEach((doc) => {
         const product = {
             id: doc.id,
@@ -57,7 +58,7 @@ created(){
     })
 }
 
-itemDetail(product){
+itemDetail(product: any){
     this.$store.commit('setItem', product);
     this.$router.push({
     name: 'item',

@@ -1,7 +1,7 @@
 <template>
     <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="d-flex" id="app">
-            <div class="text-bg-dark adminbar p-3" id="app" ref="jedi">
+            <div class="text-bg-dark adminbar p-3" id="app" v-if="sidebarVisible">
                 <div class="d-flex justify-content-between border-bottom mb-3 py-3">
                     <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
                     <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
@@ -66,14 +66,13 @@
                 </div> -->
             </div>
         <div class="content">
-            <div class="fs-5 py-3 px-4 menubar bg-dark text-light d-flex justify-content-between align-items-center" ref="menubar">
-                <div>
-                    <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
-                    <!-- <h5>Gadget Shop</h5> -->
-                </div>
+            <div class="fs-5 py-3 px-4 menubar bg-dark text-light d-flex justify-content-between align-items-center">
                 <button class="bg-secondary border-secondary shadow menubar" @click="toggleSideBar">
                     <i class="fa-solid fa-bars text-light"></i>   
                 </button>
+                <div>
+                    <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
+                </div>
             </div>
               <div class="dashboard-content">
                 <router-view/>
@@ -83,7 +82,7 @@
   
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import sideBar from '@/components/UI/sideBar.vue'
 import toast from '@/components/UI/toast.vue'
@@ -101,15 +100,24 @@ import { onSnapshot, doc } from "firebase/firestore";
 export default class admin extends Vue {
     auth = getAuth();
     user = this.auth.currentUser
-    id = this.user.uid
+    id = this.user?.uid 
     name = ""
     email = ""
     photoURL = ""
     toastIcon = ''
     toastTitle = ''
     toastShow = false
-
+    sidebarVisible = true
+    
+    handleResize() {
+        if (window.innerWidth <= 1000) {
+            this.sidebarVisible = false;
+        } else {
+            this.sidebarVisible = true;
+        }
+    }
     created(){
+        window.addEventListener('resize', this.handleResize);
      onAuthStateChanged(this.auth, (user) => {
         if (user) {
             this.email = user.email || '';
@@ -118,30 +126,29 @@ export default class admin extends Vue {
                 this.photoURL = user.photoURL
             }else{
                 onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
-                    this.name = doc.data().name
-                    this.photoURL = doc.data().photoURL
+                    this.name = doc.data()?.name
+                    this.photoURL = doc.data()?.photoURL
                 })
             }
         }
       });
     }
-
-    // $refs!: {
-    //     jedi: HTMLDivElement;
-    //     menubar: HTMLDivElement;
-    // };
-
-    toggleSideBar(){
-        if (this.$refs.jedi.style.display == "none") {
-            this.$refs.jedi.style.display = "block"; 
-            this.$refs.jedi.style.position = "fixed"; 
-            this.$refs.menubar.style.display = "none"; 
-        } else {
-            this.$refs.jedi.style.display = "none";
-            this.$refs.menubar.style.display = "block"; 
-            this.$refs.jedi.style.position = "static";
-        }
+    toggleSideBar() {
+        this.sidebarVisible = !this.sidebarVisible;
     }
+
+    
+    // toggleSideBar(){
+    //     if (this.$refs.jedi.style.display == "none") {
+    //         this.$refs.jedi.style.display = "block"; 
+    //         this.$refs.jedi.style.position = "fixed"; 
+    //         this.$refs.menubar.style.display = "none"; 
+    //     } else {
+    //         this.$refs.jedi.style.display = "none";
+    //         this.$refs.menubar.style.display = "block"; 
+    //         this.$refs.jedi.style.position = "static";
+    //     }
+    // }
     async logout(){
         const auth = getAuth();
         await signOut(auth).then(() => {
@@ -158,28 +165,24 @@ export default class admin extends Vue {
 
 <style scoped>
     #app{
-        /* min-height: 100vh; */
         overflow: hidden;
     }
-
+    li:hover{
+        background-color: #0275d8 !important;
+        border-radius: 5px;
+    }
     .content{
         min-height: 100vh;
         width: 100%;
         margin-left: 260px;
     }
-
     .adminbar{
         min-height: 100vh;
         min-width: 260px;
         max-width: 260px;
-        /* transition: all 2s; */
+        transition: all 2s;
         z-index: 1;
         position: fixed;
-    }
-
-    li:hover{
-        background-color: #0275d8 !important;
-        border-radius: 5px;
     }
 
     .menubar{
@@ -187,10 +190,6 @@ export default class admin extends Vue {
     }
 
     @media screen and (max-width: 1000px){
-        .adminbar{
-            display: none;
-        }
-
         .content{
             margin-left: 0px;
         }

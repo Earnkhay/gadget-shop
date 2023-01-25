@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import 'vue3-carousel/dist/carousel.css'
 import { Options, Vue } from 'vue-class-component';
 import addToCart from '@/components/addToCart.vue'
@@ -46,12 +46,12 @@ import { collection, onSnapshot, query, limit } from "firebase/firestore";
   },
   })
 export default class myProducts extends Vue {
-    products = []
+    products: any = []
     auth = getAuth()
     spinnerShow = false
     productsCollectionRef = collection(db, `products`)
     productsCollectionQuery = query(this.productsCollectionRef, limit(10));
-
+    $store: any;
   breakpoints = {
     200: {
       itemsToShow: 1,
@@ -64,10 +64,11 @@ export default class myProducts extends Vue {
     },
   }
 
+
   mounted(){
     this.spinnerShow = true
     onSnapshot(this.productsCollectionQuery, (querySnapshot) => {
-      const fbProducts = []
+      const fbProducts: { id: string; name: any; price: any; desc: any; image: any; imgName: any; }[] = []
       querySnapshot.forEach((doc) => {
           const product = {
               id: doc.id,
@@ -84,7 +85,7 @@ export default class myProducts extends Vue {
     })
   }
 
-  itemDetail(product){
+  itemDetail(product: any){
     this.$store.commit('setItem', product);
     this.$router.push({
       name: 'item',

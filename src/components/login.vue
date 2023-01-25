@@ -49,7 +49,7 @@
     </div>
   </template>
   
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import alert from '@/components/UI/alert.vue'
 import axios from 'axios'
@@ -152,7 +152,7 @@ export default class login extends Vue {
         }
     }
 
-    async checkModalTypeAuth(modalType){
+    async checkModalTypeAuth(modalType: string){
         const formData = {
             email: this.email,
             password: this.password,
