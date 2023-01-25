@@ -2,7 +2,7 @@
   <div class="app">
     <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <topnav/>
-    <div class="container text-center mt-5 fw-bold p-5 lh-lg" style="padding-top: 120px !important;" v-if="!this.$store.state.cart.length">
+    <div class="container text-center mt-5 fw-bold p-5 lh-lg" style="padding-top: 120px !important;" v-if="!$store.state.cart.length">
       <i class="fa-solid fa-cart-shopping fs-1 bg-secondary rounded-circle p-4 mb-3"></i>
       <h4>Your Cart is empty</h4>
       <p>Browse and explore our products</p>
@@ -25,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, id) in this.$store.state.cart" :key="id">
+            <tr v-for="(item, id) in $store.state.cart" :key="id">
               <th scope="row" class="text-danger" style="cursor: pointer;" @click="deleteProduct(item)">X</th>
               <td>
                 <div class="d-flex">
@@ -59,7 +59,7 @@
   <mini-cart/>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import topnav from '@/components/UI/topnav.vue';
 import miniCart from '@/components/miniCart.vue'
@@ -80,12 +80,11 @@ export default class cart extends Vue {
   toastIcon = ''
   toastTitle = ''
   toastShow = false
+  $store: any;
+  $swal: any;
   get cartTotal() {
       return this.$store.getters.cartTotal
   }
-  // get shouldShowToast(){
-  //   return this.toastShow
-  // }
   displayToast() {
       this.$swal.mixin({
         toast: true,
@@ -104,7 +103,7 @@ export default class cart extends Vue {
     this.toastShow = true
     this.$store.commit('clearCart');
   }
-  deleteProduct(item){
+  deleteProduct(item: any){
     // this.toastIcon = 'success'
     // this.toastTitle = 'Product deleted successfully'
     // this.toastShow = true

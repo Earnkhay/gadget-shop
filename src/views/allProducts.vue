@@ -15,7 +15,7 @@
   <my-footer/>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import miniCart from '@/components/miniCart.vue'
 import phones from '@/components/sections/phones.vue'

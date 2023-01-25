@@ -10,7 +10,7 @@
             <span class="badge bg-secondary rounded-pill">{{cartQuantity}}</span>
             </h4>
             <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-sm" v-for="(item, id) in this.$store.state.cart" :key="id">
+            <li class="list-group-item d-flex justify-content-between lh-sm" v-for="(item, id) in $store.state.cart" :key="id">
                 <div>
                     <h6 class="my-0">{{item.name}}</h6>
                     <small class="text-muted">Quantity: {{item.quantity}}</small>
@@ -36,7 +36,7 @@
 
                 <div class="col-12">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" v-model="email" readonly>
+                    <input type="email" class="form-control" v-model="email" readonly>
                 </div>
 
                 <div class="col-12">
@@ -82,7 +82,7 @@
 
             <div class="my-3">
                 <div class="form-check">
-                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="debitcard" v-model="selectedOption" checked="" required>
+                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="debitcard" v-model="selectedOption" checked required>
                     <label class="form-check-label" for="debit">Debit card</label>
                 </div>
                 <div class="form-check">
@@ -131,7 +131,7 @@
   <my-footer/>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import topnav from '@/components/UI/topnav.vue'
 import myFooter from '@/components/UI/myFooter.vue'
@@ -151,7 +151,7 @@ import toast from '@/components/UI/toast.vue'
 export default class checkout extends Vue {
     auth = getAuth()
     user = this.auth.currentUser
-    id = this.user.uid
+    id = this.user?.uid
     selectedOption = ''
     // date = ""
     toastIcon = ''
@@ -160,13 +160,14 @@ export default class checkout extends Vue {
     selectedCountry = ''
     sameAddress = false
     name = ""
-    email = ""
+    email: string|null = ""
     address = ""
     state = ""
     status = 'pending'
-    countries = []
+    countries:any = []
     ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
     ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
+    $store: any;
     created(){
         onAuthStateChanged(this.auth, (user) => {
             if (user) {
@@ -175,7 +176,7 @@ export default class checkout extends Vue {
                     this.name = user.displayName
                 }else{
                     onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
-                        this.name = doc.data().name
+                        this.name = doc.data()?.name
                     })
                 }
             }
@@ -192,7 +193,7 @@ export default class checkout extends Vue {
     setAddress(){
         if(this.sameAddress == true){
             onSnapshot(doc(db, `profiles/${this.id}`, ), (doc) => {
-                this.address = doc.data().address
+                this.address = doc.data()?.address
             })
         }else{
             this.address = ''

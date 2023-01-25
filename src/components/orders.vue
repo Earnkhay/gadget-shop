@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { db } from "@/firebase"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -51,8 +51,9 @@ import { onSnapshot, collection, query, orderBy } from "firebase/firestore";
 export default class overview extends Vue {
   auth = getAuth()
   user = this.auth.currentUser
+  // ? means a property is optional. a property can either have a value based on the type defined or its value can be undefined 
   id = this.user?.uid
-  orders = []
+  orders: any = []
   ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
   ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
 
@@ -60,7 +61,7 @@ export default class overview extends Vue {
     onAuthStateChanged(this.auth, (user) => {
     if (user) {
       onSnapshot(this.ordersCollectionQuery, (querySnapshot) => {
-      const fborders = []
+      const fborders: { id: string; address: string; state: string; country: string; cart: any; paymentMethod: string; cartTotal: number; cartQuantity: number; status: string; date: number; }[] = []
       querySnapshot.forEach((doc) => {
           const order = {
               id: doc.id,
