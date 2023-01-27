@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import toast from '@/components/UI/toast.vue'
 
@@ -21,7 +21,11 @@ import toast from '@/components/UI/toast.vue'
     }
 })
 export default class addToCart extends Vue {
-    
+
+    title!: string;
+    price!: number;
+    itemId!: string;
+    img!: string;
     item = {
       name: this.title,
       price: this.price,
@@ -32,20 +36,31 @@ export default class addToCart extends Vue {
     toastIcon = ''
     toastTitle = ''
     toastShow = false
-//   $store: any;
-//   title!: string;
-//   price!: number;
-//   itemId!: string;
-//   img!: string;
+  $store: any;
+  
+
+    created() {
+        this.item = {
+            name: this.title,
+            price: this.price,
+            itemId: this.itemId,
+            img: this.img,
+            quantity: 1
+        }
+    }
 
     addToCart(){
         this.toastIcon = 'success'
         this.toastTitle = 'Product added to cart successfully'
         this.toastShow = true
         this.$store.commit('addToCart', this.item)
-        // console.log(typeof this.item.name, ' add to cart item');
+        // console.log(typeof this.item, ' add to cart item');
     }
 }
 </script>
 
+
+function Prop() {
+  throw new Error('Function not implemented.');
+}
   
