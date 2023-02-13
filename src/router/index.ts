@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
-import admin from '@/views/admin.vue'
+import account from '@/views/account.vue'
 import overview from '@/components/overview.vue'
 import products from '@/components/products.vue'
 import profile from '@/components/profile.vue'
@@ -13,12 +13,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'Gadget Shop',
+    },
   },
   {
-    path: '/admin',
-    name: 'admin',
-    component: admin,
+    path: '/account',
+    name: 'account',
+    component: account,
     meta: {
       requiresAuth: true
     },
@@ -26,52 +29,77 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'overview',
         name: 'overview',
-        component: overview 
+        component: overview,
+        meta: {
+          title: 'Dashboard',
+        },
       },
       {
         path: 'products',
         name: 'products',
-        component: products ,
+        component: products,
+        meta: {
+          title: 'Products',
+        },
       },
       {
         path: 'profile',
         name: 'profile',
-        component: profile 
+        component: profile,
+        meta: {
+          title: 'Profile',
+        },
       },
       {
         path: 'orders',
         name: 'orders',
-        component: orders 
+        component: orders,
+        meta: {
+          title: 'Orders',
+        },
       }
     ]
   },
   {
     path: '/cart',
     name: 'cart',
-    component: cart
+    component: cart,
+    meta: {
+      title: 'Cart',
+    },
   },
   {
     path: '/item',
     name: 'item',
-    component: () => import('../views/item.vue')
+    component: () => import('../views/item.vue'),
+    meta: {
+      title: 'Product details',
+    },
   },
   {
     path: '/products',
     name: 'allProducts',
-    component: () => import('../views/allProducts.vue')
+    component: () => import('../views/allProducts.vue'),
+    meta: {
+      title: 'Products',
+    },
   },
   {
     path: '/checkout',
     name: 'checkout',
     component: () => import('../views/checkout.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      title: 'Checkout'
     },
   },
   {
     path: "/404",
     name: "notFound",
-    component: notFoundPage
+    component: notFoundPage,
+    meta: {
+      title: '404',
+    },
   },
   {
     path: "/:catchAll(.*)",
@@ -120,6 +148,7 @@ const getCurrentUser = () => {
 //   }
 // })
 router.beforeEach(async (to, from, next) => {
+  document.title = `${to.meta.title}`;
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (await getCurrentUser()) {
       next();

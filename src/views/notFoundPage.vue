@@ -6,7 +6,7 @@
                 <div class="card-header"><h1>404</h1></div>
                 <div class="card-body">
                     <h5 class="card-title">Page Not Found</h5>
-                    <p class="card-text"><router-link :to="{name: 'login'}" id="todolink" class="fs-6 link-dark"><span><i class="fa-solid fa-arrow-left-long"></i></span> Click here to go back</router-link></p>
+                    <p class="card-text"><router-link :to="{name: 'home'}" id="todolink" class="fs-6 link-dark"><span><i class="fa-solid fa-arrow-left-long"></i></span> Click here to go back</router-link></p>
                 </div>
             </div>
       </div>

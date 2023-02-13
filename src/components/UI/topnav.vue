@@ -16,13 +16,13 @@
           </form> -->
           
           <li class="nav-item d-flex align-items-center me-3 p-2">
-            <router-link to="/" class="text-decoration-none link-dark">Home</router-link>
+            <router-link to="/" class="text-decoration-none link-dark" active-class="text-primary">Home</router-link>
           </li>
           <li class="nav-item d-flex align-items-center me-3 p-2">
-            <router-link to="/products" class="text-decoration-none link-dark">Products</router-link>
+            <router-link to="/products" class="text-decoration-none link-dark" active-class="text-primary">Products</router-link>
           </li>
           <li class="nav-item d-flex align-items-center me-3 p-2">
-            <router-link to="/cart" class="link-dark p-1 text-decoration-none">
+            <router-link to="/cart" class="link-dark p-1 text-decoration-none"  active-class="text-primary">
               <i class="fa-solid fa-cart-shopping position-relative fs-5 me-1">
                 <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;" v-if="cartQuantity">
                   {{cartQuantity}}
@@ -38,8 +38,8 @@
               Hi, {{name}}
             </a>
             <ul class="dropdown-menu">
-              <li><router-link class="dropdown-item" to="/admin/overview">My Account</router-link></li>
-              <li><router-link class="dropdown-item" to="/admin/orders">Orders</router-link></li>
+              <li><router-link class="dropdown-item" :to="{name: 'overview'}">My Account</router-link></li>
+              <li><router-link class="dropdown-item" :to="{name: 'orders'}">Orders</router-link></li>
               <li><hr class="dropdown-divider"></li>
               <div class="text-center">
                 <li><a class="dropdown-item link-dark fw-bold" href="#" @click="logOutAction">Logout</a></li>

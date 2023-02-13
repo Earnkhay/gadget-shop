@@ -13,7 +13,6 @@
             </div>
 
             <div class="col-md-3 col-sm-3 mb-3">
-
             </div>
 
             <div class="col-md-3 col-sm-3 mb-3">
@@ -21,7 +20,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item mb-2"><router-link to="/" class="text-decoration-none link-dark">Home</router-link></li>
                 <li class="nav-item mb-2"><router-link to="/products" class="text-decoration-none link-dark">Products</router-link></li>
-                <li class="nav-item mb-2"><router-link class="dropdown-item" to="/admin/overview">Account</router-link></li>
+                <li class="nav-item mb-2"><router-link class="dropdown-item" :to="{name: 'overview'}">Account</router-link></li>
                 <li class="nav-item mb-2"><router-link to="/cart" class="link-dark text-decoration-none">Cart</router-link></li>
             </ul>
             </div>

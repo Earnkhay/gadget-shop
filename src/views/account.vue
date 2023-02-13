@@ -20,25 +20,25 @@
                 <h6>Menu</h6>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item mb-1">
-                        <router-link to="/admin/overview" active-class="bg-primary" class="nav-link link-light" aria-current="page">
+                        <router-link :to="{name: 'overview'}" active-class="bg-primary" class="nav-link link-light" aria-current="page">
                             <i class="fa-solid fa-chart-line p-1"></i>
                             Overview
                         </router-link>
                     </li>
                     <!-- <li class="nav-item mb-1">
-                        <router-link to="/admin/products" active-class="bg-primary" class="nav-link text-light">
+                        <router-link :to="{name: 'products'}" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-shop p-1"></i> 
                                 Products
                         </router-link>
                     </li> -->
                     <li class="nav-item mb-1">
-                        <router-link to="/admin/orders" active-class="bg-primary" class="nav-link text-light">
+                        <router-link :to="{name: 'orders'}" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-cart-shopping p-1"></i>
                             Orders
                         </router-link>
                     </li>
                     <li class="nav-item mb-1">
-                        <router-link to="/admin/profile" active-class="bg-primary" class="nav-link text-light">
+                        <router-link :to="{name: 'profile'}" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-user p-1"></i>
                                 Profile
                         </router-link>
@@ -95,7 +95,7 @@ import { onSnapshot, doc } from "firebase/firestore";
     toast
   },
 })
-export default class admin extends Vue {
+export default class account extends Vue {
     auth = getAuth();
     user = this.auth.currentUser
     id = this.user?.uid 

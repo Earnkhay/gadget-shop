@@ -61,7 +61,7 @@ created(){
 itemDetail(product: any){
     this.$store.commit('setItem', product);
     this.$router.push({
-    name: 'item',
+        name: 'item',
     });
 }
 }

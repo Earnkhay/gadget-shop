@@ -59,10 +59,10 @@ import { db } from "@/firebase"
 import { doc, setDoc } from "firebase/firestore";
 
 @Options({
-components: {
-    alert, 
-    toast,
-},
+    components: {
+        alert, 
+        toast,
+    },
 })
 export default class login extends Vue {
     passwordType = 'password'
@@ -237,7 +237,6 @@ export default class login extends Vue {
 #app{
     min-height: 100vh;
 }
-
 .icon{
     margin-left: -30px; 
     margin-top: 10px;
