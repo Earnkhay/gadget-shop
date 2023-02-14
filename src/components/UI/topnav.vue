@@ -78,6 +78,7 @@ export default class topnav extends Vue {
   toastIcon = ''
   toastTitle = ''
   toastShow = false
+  // eslint-disable-next-line
   $store: any;
   created(){
     onAuthStateChanged(this.auth, (user) => {
@@ -88,7 +89,7 @@ export default class topnav extends Vue {
         }else{
           onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
             //The definite assignment assertion is a feature that allows a ! to be placed after instance property and variable declarations to relay to TypeScript that a variable is indeed assigned for all intents and purposes
-              this.name = doc.data()!.name
+              this.name = doc.data()?.name
           })
         }
       } else {

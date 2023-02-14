@@ -78,7 +78,6 @@
             <hr class="my-4">
 
             <h4 class="mb-3">Payment method</h4>
-            <!-- <input type="date" v-model="date"> -->
 
             <div class="my-3">
                 <div class="form-check">
@@ -164,9 +163,11 @@ export default class checkout extends Vue {
     address = ""
     state = ""
     status = 'pending'
-    countries:any = []
+    // eslint-disable-next-line
+    countries: any = []
     ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
     ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
+    // eslint-disable-next-line
     $store: any;
     created(){
         onAuthStateChanged(this.auth, (user) => {

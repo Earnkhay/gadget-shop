@@ -36,8 +36,8 @@ export default class addToCart extends Vue {
     toastIcon = ''
     toastTitle = ''
     toastShow = false
-  $store: any;
-  
+    // eslint-disable-next-line
+    $store: any;
 
     created() {
         this.item = {
@@ -54,13 +54,9 @@ export default class addToCart extends Vue {
         this.toastTitle = 'Product added to cart successfully'
         this.toastShow = true
         this.$store.commit('addToCart', this.item)
-        // console.log(typeof this.item, ' add to cart item');
     }
 }
 </script>
 
 
-function Prop() {
-  throw new Error('Function not implemented.');
-}
   

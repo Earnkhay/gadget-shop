@@ -10,14 +10,14 @@ import {Options, Vue} from "vue-class-component"
     props: {
       icon: String,
       title: String,
-      // showToast: Boolean
     }
 })
 
 export default class toast extends Vue {
+  // eslint-disable-next-line
   $swal: any
-  icon: any
-  title: any
+  icon: string | undefined
+  title: string | undefined
   displayToast() {
     this.$swal.mixin({
       toast: true,
@@ -31,12 +31,7 @@ export default class toast extends Vue {
     })
   }    
   mounted(){
-    // this.showToast()
     this.displayToast()
-    // if (this.showToast) {
-    //   this.displayToast();
-    //   console.log(this.showToast, 'toast comp', this.displayToast());
-    // }
   }
 }
 </script>

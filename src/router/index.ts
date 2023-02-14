@@ -1,12 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
-import account from '@/views/account.vue'
-import overview from '@/components/overview.vue'
-import products from '@/components/products.vue'
-import profile from '@/components/profile.vue'
-import orders from '@/components/orders.vue'
-import cart from '@/views/cart.vue'
-import notFoundPage from '@/views/notFoundPage.vue'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const routes: Array<RouteRecordRaw> = [
@@ -21,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/account',
     name: 'account',
-    component: account,
+    component: () => import('../views/account.vue'),
     meta: {
       requiresAuth: true
     },
@@ -29,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'overview',
         name: 'overview',
-        component: overview,
+        component: () => import('../components/overview.vue'),
         meta: {
           title: 'Dashboard',
         },
@@ -37,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'products',
         name: 'products',
-        component: products,
+        component: () => import('../components/products.vue'),
         meta: {
           title: 'Products',
         },
@@ -45,7 +38,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'profile',
         name: 'profile',
-        component: profile,
+        component: () => import('../components/profile.vue'),
         meta: {
           title: 'Profile',
         },
@@ -53,7 +46,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'orders',
         name: 'orders',
-        component: orders,
+        component: () => import('../components/orders.vue'),
         meta: {
           title: 'Orders',
         },
@@ -63,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/cart',
     name: 'cart',
-    component: cart,
+    component: () => import('../views/cart.vue'),
     meta: {
       title: 'Cart',
     },
@@ -96,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/404",
     name: "notFound",
-    component: notFoundPage,
+    component: () => import('../views/notFoundPage.vue'),
     meta: {
       title: '404',
     },

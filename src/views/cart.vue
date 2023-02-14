@@ -80,7 +80,9 @@ export default class cart extends Vue {
   toastIcon = ''
   toastTitle = ''
   toastShow = false
+  // eslint-disable-next-line
   $store: any;
+  // eslint-disable-next-line
   $swal: any;
   get cartTotal() {
       return this.$store.getters.cartTotal
@@ -103,7 +105,7 @@ export default class cart extends Vue {
     this.toastShow = true
     this.$store.commit('clearCart');
   }
-  deleteProduct(item: any){
+  deleteProduct(item: object){
     this.displayToast()
     this.$store.commit('removeFromCart', item)
   }

@@ -61,7 +61,7 @@ export default class overview extends Vue {
   auth = getAuth()
   user = this.auth.currentUser
   id = this.user?.uid
-  orders: any = []
+  orders: { id: string; cart: any; status: string; date: number; }[] = []
   ordersCollectionRef = collection(db, `profiles/${this.id}/orders`)
   ordersCollectionQuery = query(this.ordersCollectionRef, orderBy('date', 'desc'));
 

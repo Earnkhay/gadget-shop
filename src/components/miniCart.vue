@@ -37,6 +37,7 @@
 import { Vue } from 'vue-class-component';
 
 export default class miniCart extends Vue {
+    // eslint-disable-next-line
     $store: any;
     checkout(){
         this.$router.push('/cart')
