@@ -21,10 +21,6 @@
         text-decoration: none;
     }
 
-    *{
-        margin: 0;
-        padding: 0;
-    }
     .bg{
         min-height: 100vh;
         background-color: darkslategray;

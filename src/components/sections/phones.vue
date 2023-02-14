@@ -4,7 +4,7 @@
     </div>
     <div class="d-flex flex-wrap container flex-wrapper">
         <div class="card mb-3 me-1" style="width: 17rem; min-height: 100%;" v-for="(product, id) in products" :key="id">
-            <img :src="product.image" width="100" height="150" @click="itemDetail(product)" class="card-img-top" alt="Product image">
+            <img :src="product.image" width="100" height="150" @click="itemDetail(product)" class="card-img-top" :alt="product.name">
             <div class="card-body text-start">
             <div @click="itemDetail(product)" class="mb-3">
                 <h5 class="card-title">{{product.name}}</h5>
@@ -31,11 +31,12 @@ components: {
 },
 })
 export default class phones extends Vue {
-    products: any = []
+    products: { id: string; name: string; price: number; desc: string; image: string; imgName: string; }[] = []
     auth = getAuth()
     spinnerShow = false
     productsCollectionRef = collection(db, `products`)
     productsCollectionQuery = query(this.productsCollectionRef, where('category', '==', 'Phone'));
+    // eslint-disable-next-line
     $store: any;
 
     created(){
@@ -58,7 +59,7 @@ export default class phones extends Vue {
         })
     }
 
-    itemDetail(product: any){
+    itemDetail(product: object){
         this.$store.commit('setItem', product);
         this.$router.push({
         name: 'item',

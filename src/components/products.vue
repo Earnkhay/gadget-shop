@@ -161,7 +161,7 @@ import { collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, orderBy, que
   },
 })
 export default class products extends Vue {
-  products:any = []
+  products: { id: string; name: string; price: number; desc: string; category: string; image: string; imgName: string; }[] = []
   image = ""
   url = ""
   name = ""
@@ -170,12 +170,12 @@ export default class products extends Vue {
   fileName = ""
   imgName = ""
   editName = ""
-  editPrice = null
+  editPrice:number|undefined
   editDesc = ""
   editCategory = ""
   images = []
   storage = getStorage();
-  currentProduct: any
+  currentProduct: { id: string; }|undefined
   toastIcon = ''
   toastTitle = ''
   toastShow = false
@@ -327,20 +327,22 @@ export default class products extends Vue {
     // }
 
   editProduct(id: any){
-      const taskToUpdate = this.products.find((product: { id: any; }) => product.id === id)
-      this.editName = taskToUpdate.name,
-      this.editPrice = taskToUpdate.price,
-      this.editDesc = taskToUpdate.desc,
-      this.image = taskToUpdate.image,
-      this.editCategory = taskToUpdate.category
-      this.currentProduct = taskToUpdate
+      const taskToUpdate = this.products.find((product: { id: string; }) => product.id === id)
+      if(taskToUpdate != undefined){
+        this.editName = taskToUpdate.name,
+        this.editPrice = taskToUpdate.price,
+        this.editDesc = taskToUpdate.desc,
+        this.image = taskToUpdate.image,
+        this.editCategory = taskToUpdate.category
+        this.currentProduct = taskToUpdate
+      }
   }
 
   updateProduct(){
     this.toastIcon = 'success'
     this.toastTitle = 'Product updated successfully'
     this.toastShow = true
-      updateDoc(doc(db, `products`, this.currentProduct.id), {
+      updateDoc(doc(db, `products`, this.currentProduct!.id), {
           name: this.editName,
           price: this.editPrice,
           desc: this.editDesc,
@@ -361,7 +363,7 @@ export default class products extends Vue {
 
     const itemToBedeleted = this.products.find((data: { id: string; }) => data.id == id);
 
-    const spaceRef = ref(imagesRef, `${itemToBedeleted.imgName}`);
+    const spaceRef = ref(imagesRef, `${itemToBedeleted!.imgName}`);
 
     //Delete the file
     deleteObject(spaceRef).then(() => {

@@ -7,7 +7,7 @@
     <carousel :breakpoints="breakpoints" :autoplay="2000" :wrap-around="true">
         <slide v-for="(product, id) in products" :key="id">
           <div class="card" style="width: 18rem; height: 100%;">
-            <img :src="product.image" width="100" height="190" @click="itemDetail(product)" class="card-img-top" alt="Product image">
+            <img :src="product.image" width="100" height="190" @click="itemDetail(product)" class="card-img-top" :alt="product.name">
             <div class="card-body text-start">
               <div @click="itemDetail(product)" class="mb-3">
                 <h5 class="card-title">{{product.name}}</h5>
@@ -46,11 +46,12 @@ import { collection, onSnapshot, query, limit } from "firebase/firestore";
   },
   })
 export default class myProducts extends Vue {
-    products: any = []
+    products: { id: string; name: string; price: number; desc: string; image: string; imgName: string; }[] = []
     auth = getAuth()
     spinnerShow = false
     productsCollectionRef = collection(db, `products`)
     productsCollectionQuery = query(this.productsCollectionRef, limit(10));
+    // eslint-disable-next-line
     $store: any;
   breakpoints = {
     200: {

@@ -35,6 +35,7 @@ import myFooter from '@/components/UI/myFooter.vue'
     },
 })
 export default class item extends Vue {
+    // eslint-disable-next-line
     $store: any;
     // quantity = 1
 }

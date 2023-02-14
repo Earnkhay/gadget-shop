@@ -171,7 +171,7 @@ export default class login extends Vue {
                 this.toastIcon = 'success'
                 this.toastTitle = 'Signed up successfully'
                 this.toastShow = true
-                this.$router.replace(`/admin/profile`)
+                this.$router.replace(`/account/profile`)
             })
             .catch((err) => {
                 this.toastIcon = 'error'
@@ -200,7 +200,7 @@ export default class login extends Vue {
                 this.toastIcon = 'success'
                 this.toastTitle = 'Signed in successfully'
                 this.toastShow = true
-                this.$router.replace('/admin/profile')
+                this.$router.replace('/account/overview')
             })
             .catch((err) => {
                 this.toastIcon = 'error'
