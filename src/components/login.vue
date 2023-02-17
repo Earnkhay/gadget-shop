@@ -79,6 +79,7 @@ export default class login extends Vue {
     mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
     //To check a password between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
     regPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
+$store: any;
 
     setLoginPage(){     
         if(this.modalType == "signUp"){
@@ -163,7 +164,8 @@ export default class login extends Vue {
             await createUserWithEmailAndPassword(auth, this.email, this.password)
             .then((user) => {
                 setDoc(doc(db, "profiles", user.user.uid), {
-                    name: this.name
+                    name: this.name,
+                    email: this.email
                 });
                 axios.post('https://gadget-shop-65d7a-default-rtdb.firebaseio.com/signup.json', {
                     formData: formData
@@ -171,7 +173,7 @@ export default class login extends Vue {
                 this.toastIcon = 'success'
                 this.toastTitle = 'Signed up successfully'
                 this.toastShow = true
-                this.$router.replace(`/account/profile`)
+                this.$router.push({ name: 'profile', params: { name: this.name } })
             })
             .catch((err) => {
                 this.toastIcon = 'error'

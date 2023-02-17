@@ -1,6 +1,8 @@
 // import { createStore, ActionContext, Mutation, } from 'vuex'
 import { createStore } from 'vuex'
-
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { db } from "@/firebase" 
+import { onSnapshot, doc } from "firebase/firestore"
 
 interface items{
   price: number,
@@ -11,13 +13,10 @@ interface items{
 }
 
 interface CartState{
-  product: any;
+  name: string
+  product: object;
   cart: items[],
 }
-
-// type Context = {
-//   commit: (name: string) => void;
-// }; 
 
 const cart = window.localStorage.getItem('cart');
 const product = window.localStorage.getItem('product');
@@ -25,7 +24,8 @@ const product = window.localStorage.getItem('product');
 export default createStore({
   state: {
     cart: cart ? JSON.parse(cart) : [],
-    product: product ? JSON.parse(product) : {}
+    product: product ? JSON.parse(product) : {},
+    name: ""
   } as CartState,
   getters: {
     cartTotal(state) {
@@ -52,7 +52,6 @@ export default createStore({
     // saveData(state: CartState){
     //   window.localStorage.setItem('cart', JSON.stringify(state.cart))
     // }
-
     removeFromCart(state:CartState, item:items){
       const index = state.cart.indexOf(item);
       state.cart.splice(index, 1)
@@ -66,9 +65,32 @@ export default createStore({
       state.cart = [];
       window.localStorage.removeItem('cart');
     },
-
+    setName(state, name) {
+      state.name = name
+    },
   },
   actions: {
+    getDetails({ commit }){
+      return new Promise<void>((resolve, reject) => {
+        const auth = getAuth()
+        const user = auth.currentUser
+        const id = user?.uid
+        // let address = ""
+        let name:string 
+        // let number = ""
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            onSnapshot(doc(db, `profiles/${id}`), (doc) => {
+                name = doc.data()?.name
+                // address = doc.data()?.address
+                // number = doc.data()?.number
+                commit('setName', name)
+                resolve()
+            });
+          }
+        });
+      })
+    }
   },
   modules: {
   }
