@@ -81,20 +81,11 @@ export default class profile extends Vue {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         onSnapshot(doc(db, `profiles/${this.id}`), (doc) => {
-            // console.log("Current data: ", doc.data());
             this.name = doc.data()?.name
             this.address = doc.data()?.address
             this.number = doc.data()?.number
         });
         this.email = user.email;
-        this.photoURL = user.photoURL;
-          if(user.displayName != null){
-              this.name = user.displayName
-          }else {
-              onSnapshot(doc(db, "profiles", user.uid), (doc) => {
-                  this.name = doc.data()?.name
-              })
-          }
       }
     });
   }

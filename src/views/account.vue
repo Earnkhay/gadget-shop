@@ -12,7 +12,7 @@
                         <img src="../assets/undraw_Profile_pic_re_iwgo.png" v-else alt="avatar" width="55" height="55" class="rounded-circle bg-transparent">
                     </div>
                     <div class="text-white">
-                        <h4 class="fw-bold text-wrap text-break">{{name}}</h4>   
+                        <h4 class="fw-bold text-wrap text-break">{{ name }}</h4>   
                         <p class="text-wrap text-break" style="font-size: 12px;">{{email}}</p>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         </router-link>
                     </li>
                     <li class="nav-item mb-1">
-                        <router-link :to="{name: 'profile'}" active-class="bg-primary" class="nav-link text-light">
+                        <router-link :to="{name: 'profile', params: { name: name }}" active-class="bg-primary" class="nav-link text-light">
                             <i class="fa-solid fa-user p-1"></i>
                                 Profile
                         </router-link>
@@ -106,6 +106,7 @@ export default class account extends Vue {
     toastTitle = ''
     toastShow = false
     sidebarVisible = true
+$store: any;
     
     handleResize() {
         if (window.innerWidth <= 1000) {
@@ -119,15 +120,10 @@ export default class account extends Vue {
      onAuthStateChanged(this.auth, (user) => {
         if (user) {
             this.email = user.email || '';
-            if(user.displayName != null && user.photoURL != null){
-                this.name = user.displayName,
-                this.photoURL = user.photoURL
-            }else{
-                onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
-                    this.name = doc.data()?.name
-                    this.photoURL = doc.data()?.photoURL
-                })
-            }
+            onSnapshot(doc(db, `profiles/${user.uid}`, ), (doc) => {
+                this.name = doc.data()?.name
+                this.photoURL = doc.data()?.photoURL
+            })
         }
       });
     }
