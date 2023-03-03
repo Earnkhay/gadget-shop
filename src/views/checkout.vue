@@ -223,7 +223,7 @@ export default class checkout extends Vue {
             this.toastIcon = 'success'
             this.toastTitle = 'Order placed successfully'
             this.toastShow = true
-            this.$router.push('/admin/orders')
+            this.$router.push('/account/orders')
             this.$store.commit('clearCart');
         }else{
             this.toastIcon = 'error'
