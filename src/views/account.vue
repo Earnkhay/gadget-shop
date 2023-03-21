@@ -1,70 +1,70 @@
 <template>
     <toast v-if="toastShow" :icon="toastIcon" :title="toastTitle"/>
     <div class="d-flex" id="app">
-            <div class="text-bg-dark adminbar p-3" id="app" v-if="sidebarVisible">
-                <div class="d-flex justify-content-between border-bottom mb-3 py-3">
-                    <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
-                    <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
-                </div>
-                <div class="d-flex mb-3">
-                    <div class="me-3">
-                        <img :src="photoURL" alt="avatar" v-if="photoURL"  width="55" height="55" class="rounded-circle bg-transparent">
-                        <img src="../assets/undraw_Profile_pic_re_iwgo.png" v-else alt="avatar" width="55" height="55" class="rounded-circle bg-transparent">
-                    </div>
-                    <div class="text-white">
-                        <h4 class="fw-bold text-wrap text-break">{{ name }}</h4>   
-                        <p class="text-wrap text-break" style="font-size: 12px;">{{email}}</p>
-                    </div>
-                </div>
-                <hr>
-                <h6>Menu</h6>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item mb-1">
-                        <router-link :to="{name: 'overview'}" active-class="bg-primary" class="nav-link link-light" aria-current="page">
-                            <i class="fa-solid fa-chart-line p-1"></i>
-                            Overview
-                        </router-link>
-                    </li>
-                    <!-- <li class="nav-item mb-1">
-                        <router-link :to="{name: 'products'}" active-class="bg-primary" class="nav-link text-light">
-                            <i class="fa-solid fa-shop p-1"></i> 
-                                Products
-                        </router-link>
-                    </li> -->
-                    <li class="nav-item mb-1">
-                        <router-link :to="{name: 'orders'}" active-class="bg-primary" class="nav-link text-light">
-                            <i class="fa-solid fa-cart-shopping p-1"></i>
-                            Orders
-                        </router-link>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <router-link :to="{name: 'profile', params: { name: name }}" active-class="bg-primary" class="nav-link text-light">
-                            <i class="fa-solid fa-user p-1"></i>
-                                Profile
-                        </router-link>
-                    </li>
-                    <li class="nav-item mb-1">
-                        <a href="#" class="nav-link text-light" @click="logout">
-                            <i class="fa-solid fa-power-off p-1"></i>
-                            Logout
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <!-- <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>Administrator</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                </div> -->
+        <div class="text-bg-dark adminbar p-3" id="app" v-if="sidebarVisible">
+            <div class="d-flex justify-content-between border-bottom mb-3 py-3">
+                <router-link to="/" class="text-decoration-none link-light fs-5">Gadget Shop</router-link>
+                <i class="fa-solid fa-x menubar" @click="toggleSideBar"></i> 
             </div>
+            <div class="d-flex mb-3">
+                <div class="me-3">
+                    <img :src="photoURL" alt="avatar" v-if="photoURL"  width="55" height="55" class="rounded-circle bg-transparent">
+                    <img src="../assets/undraw_Profile_pic_re_iwgo.png" v-else alt="avatar" width="55" height="55" class="rounded-circle bg-transparent">
+                </div>
+                <div class="text-white">
+                    <h4 class="fw-bold text-wrap text-break">{{ name }}</h4>   
+                    <p class="text-wrap text-break" style="font-size: 12px;">{{email}}</p>
+                </div>
+            </div>
+            <hr>
+            <h6>Menu</h6>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item mb-1">
+                    <router-link :to="{name: 'overview'}" active-class="bg-primary" class="nav-link link-light" aria-current="page">
+                        <i class="fa-solid fa-chart-line p-1"></i>
+                        Overview
+                    </router-link>
+                </li>
+                <!-- <li class="nav-item mb-1">
+                    <router-link :to="{name: 'products'}" active-class="bg-primary" class="nav-link text-light">
+                        <i class="fa-solid fa-shop p-1"></i> 
+                            Products
+                    </router-link>
+                </li> -->
+                <li class="nav-item mb-1">
+                    <router-link :to="{name: 'orders'}" active-class="bg-primary" class="nav-link text-light">
+                        <i class="fa-solid fa-cart-shopping p-1"></i>
+                        Orders
+                    </router-link>
+                </li>
+                <li class="nav-item mb-1">
+                    <router-link :to="{name: 'profile', params: { name: name }}" active-class="bg-primary" class="nav-link text-light">
+                        <i class="fa-solid fa-user p-1"></i>
+                            Profile
+                    </router-link>
+                </li>
+                <li class="nav-item mb-1">
+                    <a href="#" class="nav-link text-light" @click="logout">
+                        <i class="fa-solid fa-power-off p-1"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <!-- <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong>Administrator</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+            </div> -->
+        </div>
         <div class="content">
             <div class="fs-5 py-3 px-4 menubar bg-dark text-light d-flex justify-content-between align-items-center">
                 <button class="bg-secondary border-secondary shadow menubar" @click="toggleSideBar">
